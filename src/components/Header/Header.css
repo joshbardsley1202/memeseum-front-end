@@ -1,0 +1,18 @@
+header {
+    padding-left:3vw;
+    color: rgb(17,73,55);
+    display:flex;
+    margin-top:1.4vh;
+    font-family: 'Fredoka One',
+    cursive;
+    font-size:1.2rem;
+}
+
+#login-button {
+    margin-left:60vw;
+    width:7vw;
+    height:5vh;
+    margin-top:4vh;
+    color: rgb(17, 73, 55);
+    font-size: 1rem;
+}

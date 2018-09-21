@@ -1,0 +1,24 @@
+
+h2 {
+    padding-top:5vh;
+    color: rgb(17, 73, 55);
+    padding-left:44vw;
+}
+
+.category-links {
+    margin-left:4vw;
+    padding:9.2vw;
+    color:black;
+    text-decoration:none;
+}
+
+#border-link {
+    border: 1px solid black;
+    padding:2.5vh;
+    background-color: rgba(46, 139, 87,0.9);
+    margin-top:4vh;
+}
+
+a:hover {
+    text-decoration: underline;
+}

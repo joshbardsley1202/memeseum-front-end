@@ -1,0 +1,27 @@
+label.cabinet {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+    background-color: black;
+    color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 29px;
+    padding-right: 29px;
+    border-radius: 5px;
+    font-size: 15px;
+
+}
+.upload{
+    max-width: 10%;
+}
+
+input.file-select {
+    
+    height: 100%;
+    display: none;
+    opacity: 0;
+    -moz-opacity: 0;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}
