@@ -1,15 +1,19 @@
-import React from "react"
-import "./Header.css"
-
+import React from "react";
+import "./Header.css";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 export default class Header extends React.Component {
-    render() {
-        return (
-            <header>
-                <h1 id = "logo-header">Memeseum</h1>
-
-                <button id = "login-button">Login</button>
-            </header>
-        )
-    }
+  render() {
+    return (
+      <header>
+        <div id = "logo-div">
+            <h1 id="logo-header">Memeseum</h1>
+        </div>
+        <div id = "empty-div"></div>
+        <div id = "login-div">
+          <Link to="/login" id = "login-link">Login</Link>
+        </div>
+      </header>
+    );
+  }
 }
