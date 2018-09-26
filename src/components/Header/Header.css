@@ -1,23 +1,30 @@
 header {
+    display:flex;
+    margin-top:1.4vh; 
     padding-left:3vw;
     color: rgb(17,73,55);
-    display:flex;
-    margin-top:1.4vh;
     font-family: 'Fredoka One',
     cursive;
     font-size:1.2rem;
 }
 
 #logo-div {
-    /* display:flex; */
-}
-
-#empty-div {
-    display:flex;
-    flex:4;
+    flex:1;
 }
 
 #login-div {
-    /* display:flex; */
+    display:flex;
+    flex:1;
+    justify-content:flex-end;
+    align-items:center;
 }
 
+#login-link {
+    margin-right:2vw;
+    border: 1px solid black;
+    padding:2%;
+    text-decoration: none;
+    color:rgb(17,73,55);
+    background-color:rgba(211,211,211,0.4); 
+
+}

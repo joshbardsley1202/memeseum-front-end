@@ -24,10 +24,10 @@ class App extends Component{
         return(
             <BrowserRouter>
                 <div className="App">
-                    <header>
-                        <Header/>
-                        <Sidenav/>
-                    </header>
+                    
+                    <Header/>
+                        
+                    
                     
                     <div>
                         <Switch>
