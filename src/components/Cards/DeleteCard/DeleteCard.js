@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import "./DeleteCard.css"
 
 export default class DeleteCard extends Component {
     constructor(props){
@@ -24,7 +25,9 @@ export default class DeleteCard extends Component {
     }
   render() {
     return (
-      <button onClick={this.deletePost}>X</button>
+        <div>
+      <button onClick ={this.deletePost} id = "delete-button">Delete</button>
+      </div>
     )
   }
 }

@@ -108,9 +108,6 @@ class TemporaryDrawer extends React.Component {
       <Button href="#text-buttons" className={classes.button}>
         <Link to = "/Profile" class = "side-links">Profile</Link>
       </Button>
-      <Button href="#text-buttons" className={classes.button}>
-        <Link to = "/Saved" class = "side-links">Saved</Link>
-      </Button>
         </Drawer>
       </div>
     );

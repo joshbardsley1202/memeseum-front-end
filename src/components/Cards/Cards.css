@@ -1,14 +1,10 @@
-.meme-container {
-    display:flex;
-    justify-content:center;
-    margin-top:10vh;
-}
-
-.meme-pic {
-    /* width: 50%; */
-}
-
 img {
     width:40vw;
     border: 2px solid black;
+}
+
+.meme {
+    display:flex;
+    justify-content:center;
+    padding-top:5vh;
 }

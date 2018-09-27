@@ -38,9 +38,9 @@ export default class Cards extends React.Component {
                             id={meme.id}
                             getMemes={this.getMemes}
                         />
-                        <p>{meme.category}</p>
+                        {/* <p>{meme.category}</p> */}
                         <img src={meme.url}/>
-                        <p>Likes: {meme.likes}</p>
+                        {/* <p>Likes: {meme.likes}</p> */}
                     </div>
                 )
             }).reverse()
