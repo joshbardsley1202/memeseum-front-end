@@ -14,7 +14,7 @@ export default class Cards extends React.Component {
     }
     getMemes(){
         this.setState({isLoaded: false})
-        fetch(api.postsDatabaseURl)
+        fetch(apis.postsDatabaseURl)
           .then(res => res.json())
           .then(resJSON => {
             this.setState({ 
