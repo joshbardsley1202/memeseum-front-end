@@ -27,7 +27,7 @@ export default class DeleteCard extends Component {
     return (
         <div>
       <button onClick ={this.deletePost} id = "delete-button">Delete</button>
-      </div>
+    </div>
     )
   }
 }

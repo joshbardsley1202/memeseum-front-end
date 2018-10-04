@@ -32,18 +32,14 @@ export default class Cards extends React.Component {
     render() {
         if(this.state.isLoaded){
             var memes = this.state.memes.map(meme => {
-                return(
-                    <div className="meme">
-                        <DeleteCard
-                            id={meme.id}
-                            getMemes={this.getMemes}
-                        />
-                        {/* <p>{meme.category}</p> */}
-                        <img src={meme.url}/>
-                        {/* <p>Likes: {meme.likes}</p> */}
-                    </div>
-                )
+                return <div className="meme">
+                    {/* <p>{meme.category}</p> */}
+                    <img src={meme.url} />
+                    
+                    <DeleteCard id={meme.id} getMemes={this.getMemes} />
+                  </div>;
             }).reverse()
+           
         }else{
             memes=(
                 <h1>Loading....</h1>

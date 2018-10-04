@@ -7,7 +7,7 @@ export default class Home extends Component {
         return (
             <main>
                 
-                <Categories/>
+                {/* <Categories/> */}
                 <Cards/>
             </main>
             // <div>

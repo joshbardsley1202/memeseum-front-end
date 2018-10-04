@@ -1,4 +1,11 @@
 #delete-button {
-    padding: .5vw;
+    border: 1px solid black;
+    padding:.9vw;
+    text-decoration: none;
+    color:rgb(17,73,55);
+    background-color:rgba(211,211,211,0.4); 
+    margin-top:3vh;
+    border-radius: 9px;
+    
     
 }

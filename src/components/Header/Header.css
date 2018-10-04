@@ -1,15 +1,19 @@
 header {
     display:flex;
-    margin-top:1.4vh; 
+    /* margin-top:1.4vh;  */
     padding-left:3vw;
     color: rgb(17,73,55);
     font-family: 'Fredoka One',
     cursive;
     font-size:1.2rem;
+    border:2px solid black;
+    padding:2vh;
+    background-color:rgb(255,255,255);
 }
 
 #logo-div {
     flex:1;
+    margin-left:2vw;
 }
 
 #login-div {
