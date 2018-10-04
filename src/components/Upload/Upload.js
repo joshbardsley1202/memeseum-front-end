@@ -1,6 +1,7 @@
 import React from "react";
 import "./Upload.css";
 import { firebase } from "../../firebase-config"
+import api from '../../api'
 export default class Upload extends React.Component {
     constructor(props){
         super(props)
@@ -103,7 +104,7 @@ export default class Upload extends React.Component {
                             body: JSON.stringify(postData),
                             headers: new Headers({ 'Content-type': 'application/json' })
                         }
-                        fetch("http://localhost:5000/posts", postOptions)
+                        fetch(api.postsDatabaseURl, postOptions)
                             .then(res => {
                                 if (res.status === 404 || res.status === 500) return undefined
                                 else return res.json()
