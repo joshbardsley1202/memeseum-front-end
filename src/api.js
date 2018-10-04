@@ -1,4 +1,4 @@
 const apis = {
-    postsDatabaseURl: "https://memeseum-backened.herokuapp.com/posts/"
+    postsDatabaseURl: "https://memeseum-backend.herokuapp.com/posts/"
 }
 export default apis
