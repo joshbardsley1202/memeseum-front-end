@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import "./DeleteCard.css"
-
+import api from '../../../api'
 export default class DeleteCard extends Component {
     constructor(props){
         super(props)
@@ -10,7 +10,7 @@ export default class DeleteCard extends Component {
         this.deletePost = this.deletePost.bind(this)
     }
     deletePost() {
-        fetch(`http://localhost:5000/posts/${this.state.id}`, { method: "DELETE" })
+        fetch(api.postsDatabaseURl + this.state.id, { method: "DELETE" })
             .then(res => {
                 if(res.status == 204){
                     alert("Deleted");

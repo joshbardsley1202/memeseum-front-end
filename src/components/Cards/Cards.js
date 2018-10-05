@@ -1,5 +1,6 @@
 import React from "react"
 import "./Cards.css"
+import apis from '../../api'
 import Upload from '../Upload/Upload'
 import DeleteCard from './DeleteCard/DeleteCard'
 export default class Cards extends React.Component {
@@ -13,7 +14,7 @@ export default class Cards extends React.Component {
     }
     getMemes(){
         this.setState({isLoaded: false})
-        fetch("http://localhost:5000/posts/")
+        fetch(apis.postsDatabaseURl)
           .then(res => res.json())
           .then(resJSON => {
             this.setState({ 
