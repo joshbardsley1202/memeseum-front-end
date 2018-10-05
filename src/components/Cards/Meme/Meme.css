@@ -1,0 +1,92 @@
+.component-meme {
+    max-width: 45%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.meme-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.meme-img img {
+    width: 100%;
+    height: auto;
+}
+
+.meme-owner {
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: 1px solid lightgray;
+    border-bottom: 0px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 2px;
+}
+
+.meme-owner p {
+
+    margin: 0px;
+    margin-left: 5px;
+}
+
+.meme-owner-img {
+
+    max-width: 6%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.meme-owner-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 100%;
+}
+
+.meme-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid lightgrey;
+    border-top: 0px;
+    background-color: white;
+}
+
+.meme-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.meme-option button {
+    background-color: white;
+    font-size: 20px;
+    width: 100%;
+    border: 0px;
+}
+
+.like-meme {
+    border-right: 1px solid lightgrey;
+}
+
+.share-meme {
+    border-right: 1px solid lightgray;
+}
+
+.comment-meme {
+    border-right: 1px solid lightgray;
+}
+
+.meme-option button:hover {
+    cursor: pointer;
+
+}

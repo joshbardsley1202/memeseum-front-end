@@ -1,9 +1,27 @@
-img {
-    width:41vw;
+.component-cards {
+    border-top: 1px solid lightgrey;
+    font-family: Helvetica;
 }
 
-.meme {
-    display:flex;
-    justify-content:center;
-    padding-top:5vh;
+.meme-categories {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.meme-categories select {
+    font-family: Helvetica;
+    font-size: 25px;
+    padding: 10px 30px 10px 30px;
+
+}
+
+.memes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }

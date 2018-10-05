@@ -1,58 +1,68 @@
 import React from "react"
 import "./Cards.css"
-import apis from '../../api'
-import Upload from '../Upload/Upload'
-import DeleteCard from './DeleteCard/DeleteCard'
+// import apis from '../../api'
+// import Upload from '../Upload/Upload'
+// import DeleteCard from './DeleteCard/DeleteCard'
+import Meme from './Meme/Meme'
+
 export default class Cards extends React.Component {
-    constructor(){
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            memes: [],
-            isLoaded: false
+            memes: props.memes,
+            category: "All Memes",
+            categories: props.categories
         }
-        this.getMemes = this.getMemes.bind(this)
+        this.updateCategory = this.updateCategory.bind(this)
     }
-    getMemes(){
-        this.setState({isLoaded: false})
-        fetch(apis.postsDatabaseURl)
-          .then(res => res.json())
-          .then(resJSON => {
-            this.setState({ 
-                memes: resJSON.data, 
-                isLoaded: true
-            });
-          })
-          .catch(error => console.error(error));
+
+    updateCategory(event) {
+        let value = event.target.value
+        this.setState({
+            category: value
+        })
     }
-    
-    componentDidMount(){
-        this.getMemes()
-        
-        
-    }
+
     render() {
-        if(this.state.isLoaded){
-            var memes = this.state.memes.map(meme => {
-                return <div className="meme">
-                    {/* <p>{meme.category}</p> */}
-                    <img src={meme.url} />
-                    
-                    <DeleteCard id={meme.id} getMemes={this.getMemes} />
-                  </div>;
-            }).reverse()
-           
-        }else{
-            memes=(
-                <h1>Loading....</h1>
-            )
+        let memes = null;
+        let categories = this.state.categories.map(category => (
+            <option>{category}</option>
+        ))
+        if (this.state.category === "All Memes") {
+            memes = this.state.memes.map(meme => (
+                <Meme
+                    key={meme.id}
+                    url={meme.url}
+                    owner={meme.user}
+                    likes={meme.likes}
+                />
+            )).reverse()
+        } else {
+            let filteredMemes = this.state.memes.filter(meme => {
+                return (meme.category === this.state.category)
+            })
+            memes = filteredMemes.map(meme => (
+                <Meme
+                    key={meme.id}
+                    url={meme.url}
+                    owner={meme.user}
+                    likes={meme.likes}
+                />
+            )).reverse()
         }
         return (
-            <div>
-                <Upload
-                    getMemes={this.getMemes}
-                />
-                {memes}
-            </div>
+            <section className="component-cards">
+                <form className="meme-categories">
+                    <select onChange={this.updateCategory}>
+                        <option>All Memes</option>
+                        {categories}
+                    </select>
+                </form>
+                <section className="memes">
+                    {memes}
+                </section>
+
+            </section>
         )
     }
 }

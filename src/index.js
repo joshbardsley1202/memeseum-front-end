@@ -21,11 +21,6 @@ class App extends Component {
         this.state = {}
     }
 
-    componentDidMount() {
-        alert("React RELAY implementation is in beta stages for data driven development. See documentation in console.")
-        console.log("https://facebook.github.io/relay/docs/en/introduction-to-relay.html")
-    }
-
     render() {
         return (
             <BrowserRouter>
