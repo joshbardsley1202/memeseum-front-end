@@ -3,6 +3,7 @@ import Categories from "../Categories/Categories"
 import Cards from "../Cards/Cards"
 import loading from '../../assets/loading.gif'
 import apis from "../../api";
+import Upload from "../Upload/Upload";
 
 export default class Home extends Component {
     constructor() {
@@ -63,20 +64,16 @@ export default class Home extends Component {
             }
         } else {
             memes = (
-                <div
-                    className="loading-gif"
-                >
-                    <img
-                        src={loading}
-
-                    />
+                <div className="loading-gif">
+                    <img src={loading}/>
                 </div>
-
             )
         }
-
         return (
             <main>
+                <Upload
+                    categories={this.state.categories}
+                />
                 {memes}
             </main>
         )

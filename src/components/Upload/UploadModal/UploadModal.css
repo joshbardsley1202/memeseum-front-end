@@ -1,0 +1,43 @@
+
+.modal-upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+label.cabinet {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+    background-color: black;
+    color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 29px;
+    padding-right: 29px;
+    border-radius: 5px;
+    font-size: 15px;
+
+}
+.upload-picture {
+    background-color: black;
+    border: 0px;
+    color: white;
+    font-size: 17px;
+    padding: 5px;
+    max-width: 50%;
+}
+.upload-field {
+    margin-bottom: 30px;
+}
+input.file-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    display: none;
+    opacity: 0;
+    -moz-opacity: 0;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+}

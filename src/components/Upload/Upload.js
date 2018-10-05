@@ -1,23 +1,35 @@
 import React from "react";
+import UploadModal from './UploadModal/UploadModal'
 import "./Upload.css";
-import { firebase } from "../../firebase-config"
+import {firebase} from "../../firebase-config"
 import api from '../../api'
+
 export default class Upload extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             fileSelected: false,
             currentUpload: null,
             isUploaded: undefined,
-            uploadProgress: undefined
+            uploadProgress: undefined,
+            modalIsOpen: false
         }
         this.fileSelected = this.fileSelected.bind(this)
         this.returnFileSize = this.returnFileSize.bind(this)
         this.uploadMeme = this.uploadMeme.bind(this)
+        this.openModal = this.openModal.bind(this)
+        this.closeModal = this.closeModal.bind(this)
+    }
+
+    openModal() {
+        this.setState({modalIsOpen: true})
+    }
+
+    closeModal() {
+        this.setState({modalIsOpen: false})
     }
 
     fileSelected(event) {
-        console.log(event.target)
         if (event.target.files[0]) {
             this.setState({
                 fileSelected: true,
@@ -30,6 +42,7 @@ export default class Upload extends React.Component {
             })
         }
     }
+
     returnFileSize(number) {
         var imgSize = undefined
         if (number < 1024) {
@@ -45,6 +58,7 @@ export default class Upload extends React.Component {
             else return false
         } else return true
     }
+
     uploadMeme(event) {
         event.preventDefault()
         this.setState({
@@ -56,7 +70,7 @@ export default class Upload extends React.Component {
         if (this.returnFileSize(file.size)) {
             var storage = firebase.app().storage();
             var storageRef = firebase.storage().ref();
-            var metadata = { contentType: file.type };
+            var metadata = {contentType: file.type};
             var uploadTask = storageRef.child(file.name).put(file, metadata);
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
                 // this.setState({
@@ -98,11 +112,11 @@ export default class Upload extends React.Component {
                             category: "TEST CATEGORY",
                             likes: 0
 
-                           };
+                        };
                         var postOptions = {
                             method: 'POST',
                             body: JSON.stringify(postData),
-                            headers: new Headers({ 'Content-type': 'application/json' })
+                            headers: new Headers({'Content-type': 'application/json'})
                         }
                         fetch(api.postsDatabaseURl, postOptions)
                             .then(res => {
@@ -111,7 +125,7 @@ export default class Upload extends React.Component {
                             })
                             .then(resJSON => {
                                 if (resJSON === undefined) {
-                                    this.setState({ isUploaded: false }, () => {
+                                    this.setState({isUploaded: false}, () => {
                                         alert('Oops, something went wrong. \n the file has been uploaded, but our database was not able to retrieve the meta data.')
                                         this.setState({
                                             isUploaded: undefined,
@@ -121,7 +135,7 @@ export default class Upload extends React.Component {
                                         })
                                     })
                                 } else {
-                                    this.setState({ isUploaded: true }, () => {
+                                    this.setState({isUploaded: true}, () => {
                                         alert('Your file has been uploaded.')
                                         this.props.getMemes();
                                     })
@@ -133,29 +147,25 @@ export default class Upload extends React.Component {
             alert('Sorry, this file is too big \n Max size is 5MB')
         }
     }
-  render() {
 
-    return (
-      <section className="upload-meme-section">
-        <form className="upload" onSubmit={this.uploadMeme}>
-          <label class="cabinet">
-            ADD A MEME
-            <input
-              class="file-select"
-              onChange={this.fileSelected}
-              type="file"
-              name="file"
-              accept=".png,.jpg,.jpeg"
-              required
-            />
-            <input
-                id="upload-meme"
-                type="submit"
-                value="Upload Meme"
-            />
-          </label>
-        </form>
-      </section>
-    );
-  }
+    render() {
+
+        return (
+            <section className="upload-meme-section">
+                <button
+                    className="open-modal-btn"
+                    onClick={this.openModal}
+                >
+                    Upload a meme!
+                </button>
+                <UploadModal
+                    modalIsOpen={this.state.modalIsOpen}
+                    closeModal={this.closeModal}
+                    fileSelected={this.fileSelected}
+                    uploadMeme={this.uploadMeme}
+                    categories={this.props.categories}
+                />
+            </section>
+        );
+    }
 }
