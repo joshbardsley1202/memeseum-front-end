@@ -1,0 +1,9 @@
+.component-about{
+    font-family: "Fredoka One";
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.component-about h1{
+    font-size: 40px;
+    text-align: center;
+}

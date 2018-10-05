@@ -3,22 +3,18 @@ import Categories from "../Categories/Categories"
 import Cards from "../Cards/Cards"
 
 export default class Home extends Component {
+
     render() {
         return (
             <main>
                 
-                {/* <Categories/> */}
-                <Cards/>
+                <form >
+
+                </form>
+                <Cards
+                    filterBy={this.state.category}
+                />
             </main>
-            // <div>
-            //     <header>
-            //         <Header/>
-            //         <Sidenav/>
-            //     </header>
-            //     <Main>
-            //         <Categories/>
-            //     </Main>
-            // </div>
         )
     }
 }
