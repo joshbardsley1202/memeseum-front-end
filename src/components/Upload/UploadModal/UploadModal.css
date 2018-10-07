@@ -1,14 +1,48 @@
-
-.modal-upload{
+.component-upload-modal {
+    font-family: "Fredoka One";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80vh;
+}
+.meme-preview{
+    flex:3;
+    wdith: 100%;
+    height: auto;
+    margin-right: 10px;
+}
+.meme-preview img{
+    width: 100%;
+    height: auto;
+}
+.hidden-preview {
+    display: none;
+    height: 0px;
+    flex: 0;
+}
+.meme-info{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    flex:2;
+
+}
+.modal-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
 }
 label.cabinet {
     display: block;
     overflow: hidden;
     cursor: pointer;
+
+}
+.upload-btn {
+    font-family: "Fredoka One";
     text-align: center;
     background-color: black;
     color: white;
@@ -18,26 +52,100 @@ label.cabinet {
     padding-right: 29px;
     border-radius: 5px;
     font-size: 15px;
+    border: 0px;
 
 }
-.upload-picture {
-    background-color: black;
-    border: 0px;
-    color: white;
-    font-size: 17px;
-    padding: 5px;
-    max-width: 50%;
-}
-.upload-field {
-    margin-bottom: 30px;
+.upload-field{
+    margin-bottom: 10px;
 }
 input.file-select {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     display: none;
     opacity: 0;
     -moz-opacity: 0;
-    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
 }
+.meme-data{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.added-categories{
+    display: flex;
+    flex-direction: column;
+    font-family: Helvetica;
+    color: grey;
+    font-size: 16px;
+    width: 120%;
+}
+.added-categories div{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+.added-categories div p{
+    margin: 0px;
+    flex:8;
+
+}
+.added-categories div button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    flex:1;
+    padding: 2px;
+    border: 0px;
+    background-color: white;
+}
+.added-categories div button:hover{
+    cursor: pointer;
+}
+.meme-data textarea{
+    font-family: Helvetica;
+
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 3px;
+
+    width: 120%;
+    height: 50px;
+}
+.meme-data form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120%;
+}
+.category-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.add-category-btn{
+    font-size: 14px;
+    border: 1px solid black;
+    border-left: 0px;
+    padding: 2px;
+}
+.add-category-btn:hover{
+    cursor: pointer;
+}
+.category-selection{
+    font-family: Helvetica;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 3px;
+    font-size: 16px;
+    width: 120%;
+}
+

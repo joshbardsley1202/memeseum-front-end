@@ -12,28 +12,30 @@ export default class Upload extends React.Component {
             currentUpload: null,
             isUploaded: undefined,
             uploadProgress: undefined,
-            modalIsOpen: false
+            modalIsOpen: false,
+            memePreview: undefined,
+            newCategory: "",
+            memeCategories: []
         }
         this.fileSelected = this.fileSelected.bind(this)
         this.returnFileSize = this.returnFileSize.bind(this)
         this.uploadMeme = this.uploadMeme.bind(this)
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
+        this.addCategory = this.addCategory.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
-    openModal() {
-        this.setState({modalIsOpen: true})
-    }
-
-    closeModal() {
-        this.setState({modalIsOpen: false})
-    }
+    openModal() { this.setState({modalIsOpen: true}) }
+    closeModal() { this.setState({modalIsOpen: false}) }
 
     fileSelected(event) {
         if (event.target.files[0]) {
+            console.log(event.target.files[0])
             this.setState({
                 fileSelected: true,
-                currentUpload: event.target.files[0]
+                currentUpload: event.target.files[0],
+                memePreview: URL.createObjectURL(event.target.files[0])
             })
         } else {
             this.setState({
@@ -58,7 +60,16 @@ export default class Upload extends React.Component {
             else return false
         } else return true
     }
-
+    handleChange(event){
+        this.setState({ newCategory: event.target.value })
+    }
+    addCategory(){
+        const newCategory = this.state.newCategory
+        this.setState({
+            memeCategories: this.state.memeCategories.concat(newCategory),
+            newCategory: ""
+        })
+    }
     uploadMeme(event) {
         event.preventDefault()
         this.setState({
@@ -163,7 +174,10 @@ export default class Upload extends React.Component {
                     closeModal={this.closeModal}
                     fileSelected={this.fileSelected}
                     uploadMeme={this.uploadMeme}
-                    categories={this.props.categories}
+                    memeCategories={this.state.memeCategories}
+                    memePreview={this.state.memePreview}
+                    addCategory={this.addCategory}
+                    handleChange={this.handleChange}
                 />
             </section>
         );
