@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
+
 import './App.css';
 import registerServiceWorker from './registerServiceWorker';
 import {
@@ -14,7 +15,7 @@ import Profile from "./components/Profile/Profile"
 import Home from "./components/Home/Home"
 import Login from './components/Login/Login'
 import About from './components/About/About'
-
+import Signup from './components/Signup/Signup'
 class App extends Component {
     constructor() {
         super()
@@ -44,6 +45,10 @@ class App extends Component {
                             <Route
                                 path="/About"
                                 component={About}
+                            />
+                            <Route
+                                path="/Signup"
+                                component={Signup}
                             />
                         </Switch>
 

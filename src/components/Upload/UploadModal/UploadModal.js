@@ -12,7 +12,6 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
         fontFamily: 'Helvetica',
         borderRadius: '5px'
-
     }
 };
 

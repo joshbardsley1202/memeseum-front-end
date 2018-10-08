@@ -1,0 +1,39 @@
+.component-signup {
+    font-family: "Fredoka One";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.component-signup h1 {
+    text-align: center;
+    font-size: 40px;
+}
+
+.signup-form div {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.signup-form input {
+    padding: 10px;
+    border: 1px solid black;
+    font-size: 20px;
+}
+
+#signup-submit-btn {
+    font-family: "Fredoka One";
+    color: white;
+    border: 0px;
+    border-radius: 10px;
+    background-color: springgreen;
+}
+
+#signup-submit-btn:hover {
+    cursor: pointer;
+    background-color: limegreen;
+}

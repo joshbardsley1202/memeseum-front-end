@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from "react-router-dom";
 import "./Login.css"
 import { firebase } from '../../firebase-config.js'
 //TODO: find imports from the above line and make sure that they are being used correctly.
@@ -109,7 +110,9 @@ export default class Login extends Component {
                         />
                     </div>
                 </form>
-
+                <p>
+                    Don't have an account? Click <Link to="/signup">here</Link>.
+                </p>
             </section>
         );
     }
