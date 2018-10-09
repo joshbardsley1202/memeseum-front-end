@@ -1,40 +1,44 @@
-.component-header{
+.component-header {
     font-family: 'Fredoka One', cursive;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     padding: 30px 15px 30px 15px;
-    color: rgb(17,73,55);
+    color: rgb(17, 73, 55);
     border-bottom: 1px solid lightgray;
-    background-color:rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
 }
-#logo-div{
+
+#logo-div {
     flex: 10;
 }
-#logo-div h1{
+
+#logo-div h1 {
     margin: 0px;
     font-size: 4rem;
 }
-.component-header nav{
+
+.component-header nav {
     flex: 2;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.component-header nav div{
+
+.component-header nav div {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 #login-link {
     font-size: 20px;
     border: 1px solid black;
     border-radius: 5px;
     padding: 10px 20px 10px 20px;
     text-decoration: none;
-    color:rgb(17,73,55);
-    background-color:rgba(211,211,211,0.4);
-
+    color: rgb(17, 73, 55);
+    background-color: rgba(211, 211, 211, 0.4);
 
 }

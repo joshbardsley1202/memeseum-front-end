@@ -1,6 +1,87 @@
+.component-profile {
+    margin-top: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+    font-family: "Fredoka One";
+}
 
+.component-profile h1 {
+    text-align: center;
+    font-size: 40px;
+}
 
+#login-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+#login-error a {
+    font-size: 20px;
+    text-decoration: none;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 40px 10px 40px;
+    background-color: springgreen;
+}
 
+#login-error a:hover {
+    background-color: limegreen;
+}
+
+.account {
+    margin-left: 10%;
+    magrin-right: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.account-profile-img {
+    flex: 1;
+    max-width: 200px;
+}
+
+.account-profile-img img {
+    border-radius: 50%;
+    width: 100%;
+}
+
+.account-info {
+
+    flex: 4;
+    display: flex;
+
+    flex-direction: column;
+
+}
+.account-header{
+    display: flex;
+}
+.account-header h1 {
+    flex: 3;
+    margin: 0px;
+
+}
+
+.account-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.account-options button {
+    font-family: "Fredoka One";
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    padding: 5px 10px 5px 10px;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: rgb(17,73,55);
+}
 
 
