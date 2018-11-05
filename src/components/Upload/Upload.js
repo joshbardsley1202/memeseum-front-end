@@ -31,7 +31,6 @@ export default class Upload extends React.Component {
 
     fileSelected(event) {
         if (event.target.files[0]) {
-            console.log(event.target.files[0])
             this.setState({
                 fileSelected: true,
                 currentUpload: event.target.files[0],
@@ -76,6 +75,7 @@ export default class Upload extends React.Component {
             isUploaded: false,
             uploadProgress: 0
         })
+        
         var formData = new FormData(event.target)
         var file = formData.get('file')
         if (this.returnFileSize(file.size)) {
@@ -84,12 +84,7 @@ export default class Upload extends React.Component {
             var metadata = {contentType: file.type};
             var uploadTask = storageRef.child(file.name).put(file, metadata);
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
-                // this.setState({
-                //     uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'
-                // })
-                var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-
+                this.setState({ uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%' })
                 switch (snapshot.state) {
                     case firebase.storage.TaskState.PAUSED:
                         console.log('Upload is paused');
@@ -110,7 +105,6 @@ export default class Upload extends React.Component {
             }, () => {
                 uploadTask.snapshot.ref.getDownloadURL()
                     .then(downloadURL => {
-                        console.log(downloadURL)
                         var currentDate = new Date()
                         var formattedDate = (
                             currentDate.getMonth() + '/' +
@@ -146,8 +140,11 @@ export default class Upload extends React.Component {
                                         })
                                     })
                                 } else {
-                                    this.setState({isUploaded: true}, () => {
-                                        alert('Your file has been uploaded.')
+                                    this.setState({
+                                        isUploaded: true,
+                                        modalIsOpen: false
+                                    }, () => {
+                                        alert('Meme Uploaded.')
                                         this.props.getMemes();
                                     })
                                 }
@@ -178,6 +175,8 @@ export default class Upload extends React.Component {
                     memePreview={this.state.memePreview}
                     addCategory={this.addCategory}
                     handleChange={this.handleChange}
+                    uploadProgress={this.state.uploadProgress}
+                    isUploaded={this.state.isUploaded}
                 />
             </section>
         );

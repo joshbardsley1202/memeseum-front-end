@@ -55,6 +55,14 @@ label.cabinet {
     border: 0px;
 
 }
+.upload-btn img{
+    width: 15px;
+    height: auto
+}
+.upload-btn:hover{
+    cursor: pointer;
+    background-color: darkgray;
+}
 .upload-field{
     margin-bottom: 10px;
 }

@@ -1,6 +1,7 @@
 import Modal from 'react-modal'
 import './UploadModal.css'
 import React from "react";
+import uploadingGif from "../../../assets/uploading.gif"
 
 const customStyles = {
     content: {
@@ -16,6 +17,39 @@ const customStyles = {
 };
 
 const UploadModal = (props) => {
+    var submitBtn = null;
+    if(props.isUploaded == undefined){
+        submitBtn = (
+            <input
+                className='upload-btn'
+                type='submit'
+                value="Upload"
+            />
+        )
+    }else if(props.isUploaded == false){
+        submitBtn = (
+            <div
+                className='upload-btn'
+                type='submit'
+                value="Upload"
+                
+            >
+                <img
+                    src={uploadingGif}
+                />
+            </div>
+        )
+    }else{
+        submitBtn = (
+            <React.Fragment>
+                <input
+                    className='upload-btn'
+                    type='submit'
+                    value="Upload"
+                />
+            </React.Fragment>
+        )
+    }
     return (
         <Modal
             isOpen={props.modalIsOpen}
@@ -86,11 +120,7 @@ const UploadModal = (props) => {
                                 type="text"
                                 placeholder="Add a caption."
                             />
-                            <input
-                                className='upload-btn'
-                                type='submit'
-                                value="Upload"
-                            />
+                            {submitBtn}
                         </div>
                     </form>
                 </div>
