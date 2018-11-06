@@ -11,18 +11,24 @@
     text-align: center;
     font-size: 40px;
 }
+.signup-form{
+    width: 60%;
+    max-width: 400px;
 
+}
 .signup-form div {
     display: flex;
     flex-direction: column;
     font-size: 20px;
     margin-top: 20px;
+    width: 100%;
 }
 
 .signup-form input {
     padding: 10px;
     border: 1px solid black;
     font-size: 20px;
+
 }
 .signup-status{
     margin-top: 100px;
@@ -43,8 +49,22 @@
 .signingup-btn img{
     width: 40px;
 }
+.signup-status img{
+    width: 200px;
+}
+.signup-status p{
+    font-style: italic;
+    color: #ff524a;
+}
 .signup-status h3{
     text-align: center;
+}
+.signup-form-err{
+    margin:0px;
+    color: red;
+    font-style: italic;
+    font-size: 15px;
+    margin-top: 5px;
 }
 #signup-submit-btn {
     font-family: "Fredoka One";
