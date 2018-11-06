@@ -24,7 +24,28 @@
     border: 1px solid black;
     font-size: 20px;
 }
+.signup-status{
+    margin-top: 100px;
+    margin-left: 25%;
+    margin-right: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
+}
+.signingup-btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signingup-btn img{
+    width: 40px;
+}
+.signup-status h3{
+    text-align: center;
+}
 #signup-submit-btn {
     font-family: "Fredoka One";
     color: white;

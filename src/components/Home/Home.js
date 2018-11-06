@@ -35,7 +35,7 @@ export default class Home extends Component {
     getMemes() {
         //TODO make a class for fetching memes.
         this.setState({isLoaded: false})
-        fetch(apis.postsDatabaseURl)
+        fetch(apis.memes_Data)
             .then(res => res.json())
             .then(resJSON => {
                 this.setState({

@@ -123,7 +123,7 @@ export default class Upload extends React.Component {
                             body: JSON.stringify(postData),
                             headers: new Headers({'Content-type': 'application/json'})
                         }
-                        fetch(api.postsDatabaseURl, postOptions)
+                        fetch(api.memes_Data, postOptions)
                             .then(res => {
                                 if (res.status === 404 || res.status === 500) return undefined
                                 else return res.json()
