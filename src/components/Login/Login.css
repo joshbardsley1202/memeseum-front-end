@@ -8,15 +8,24 @@
 .component-login h1{
     font-size: 40px;
 }
+.login-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 60%;
+    max-width: 400px;
+}
 .login-form div{
     display: flex;
     flex-direction: column;
     font-size: 20px;
     margin-top: 20px;
+    width: 100%;
+
 }
 
 .login-form input{
-
     padding: 10px;
     border: 1px solid black;
     font-size: 20px;
@@ -31,4 +40,13 @@
 #login-submit-btn:hover{
     cursor: pointer;
     background-color: limegreen;
+}
+.loggingin-btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loggingin-btn img{
+    width: 40px;
 }

@@ -15,39 +15,22 @@ export default class Signup extends Component {
             displayName: undefined,
 
             signupErr: [],
-            err_password: undefined,
-            err_displayName: undefined,
+            err_password: false,
+            err_displayName: false,
 
         };
         this.onSignupSubmit = this.onSignupSubmit.bind(this);
-        this.testIfUserExists = this.testIfUserExists.bind(this);
-        this.testIfPasswordsMatch = this.testIfPasswordsMatch.bind(this);
         this.resetDisplayNameErr = this.resetDisplayNameErr.bind(this);
         this.resetPasswordErr = this.resetPasswordErr.bind(this);
     }
-    testIfUserExists(displayName){
-        //TODO, Make syncronous with firebase signup so that it catches bad input.
-        fetch(api.userInfo_Data+`/${displayName}`)
-            .then(res => res.json())
-            .then(resJSON => {
-                this.setState({
-                    err_displayName: ( resJSON.user  ? true : false )
-                })
-            })
-    }
-    testIfPasswordsMatch(password1, password2){
-        this.setState({
-            err_password: password1 !== password2
-        })
-    }
     resetDisplayNameErr(){
         if(this.state.err_displayName){
-            this.setState({ err_displayName: undefined });
+            this.setState({ err_displayName: false });
         }
     }
     resetPasswordErr(){
         if(this.state.err_password){
-            this.setState({ err_password: undefined })
+            this.setState({ err_password: false })
         }
     }
     onSignupSubmit(event){
@@ -59,54 +42,63 @@ export default class Signup extends Component {
             password1: formData.get('password1'),
             password2: formData.get('password2')
         };
-        this.testIfUserExists();
-        this.testIfPasswordsMatch(
-            signUpCredentials.password1,
-            signUpCredentials.password2
-        );
-            this.setState({signingUp: true});
-
-            firebase.auth().createUserWithEmailAndPassword(
-                signUpCredentials.email,
-                signUpCredentials.password1
-            )
-                .then(res => {
-                    if(res.additionalUserInfo.isNewUser){
-                        var user = firebase.auth().currentUser;
-                        user.sendEmailVerification()
-                            .then(() => {})
-                            .catch((error) => {
-                                this.setState({
-                                    signupErr: [...this.state.signupErr, JSON.stringify(error)]
-                                });
-                            });
-                        firebase.auth().currentUser.updateProfile({
-                            displayName: signUpCredentials.displayName
-                        })
-                            .then(() => {
-                                this.createUser({
-                                    displayName: signUpCredentials.displayName,
-                                    profilePictureUrl: signUpCredentials.photoUrl
-                                });
-                                this.setState({
-                                    displayName: signUpCredentials.displayName,
-                                    email: signUpCredentials.displayName
-                                });
-                                firebase.auth().signOut();
-                            })
-                    }
-                })
-                .catch(error => {
-                    this.setState({
-                        signupErr: [...this.state.signupErr, error.message],
-                        signedUp: false,
-                        signingUp: false
-                    });
+        this.setState({signingUp: true});
+        fetch(api.userInfo_Data + signUpCredentials.displayName)
+            .then(res => res.json())
+            .then(resJSON => {
+                let err_displayName = !!resJSON.user;
+                let err_password = signUpCredentials.password1 !== signUpCredentials.password2;
+                this.setState({
+                    err_displayName,
+                    err_password
                 });
-        }
+                return(err_displayName || err_password);
+            })
+            .then(errs => {
+                if(errs){
+                    this.setState({ signingUp: false })
+                }else{
+                    firebase.auth().createUserWithEmailAndPassword(
+                        signUpCredentials.email,
+                        signUpCredentials.password1
+                    )
+                        .then(res => {
+                            if(res.additionalUserInfo.isNewUser){
+                                let user = firebase.auth().currentUser;
+                                user.sendEmailVerification()
+                                    .then(() => {})
+                                    .catch((error) => {
+                                        this.setState({
+                                            signupErr: [...this.state.signupErr, JSON.stringify(error)]
+                                        });
+                                    });
+                                firebase.auth().currentUser.updateProfile({
+                                    displayName: signUpCredentials.displayName
+                                })
+                                    .then(() => {
+                                        this.createUser({
+                                            displayName: signUpCredentials.displayName
+                                        });
+                                        this.setState({
+                                            displayName: signUpCredentials.displayName,
+                                            email: signUpCredentials.displayName
+                                        });
+                                        firebase.auth().signOut();
+                                    })
+                            }
+                        })
+                        .catch(error => {
+                            this.setState({
+                                signupErr: [...this.state.signupErr, error.message],
+                                signedUp: false,
+                                signingUp: false
+                            });
+                        });
+                }
+            })
     }
     createUser(signUpCredentials){
-        var postOptions = {
+        let postOptions = {
             method: 'POST',
             body: JSON.stringify(signUpCredentials),
             headers: new Headers({ 'Content-type': 'application/json'})
@@ -118,16 +110,14 @@ export default class Signup extends Component {
                     this.setState({
                         signedUp: false,
                         signingUp: false,
-                        signupErr: [...this.state.signupErr, toString(res)]
+                        signupErr: [...this.state.signupErr, res.toString()]
                     });
-                }
-                else{
+                } else {
                     this.setState({ 
                         signedUp: true,
                         signingUp: false
                     });
                 }
-                
             })
             .catch(error => console.error(error));
     }
@@ -135,7 +125,7 @@ export default class Signup extends Component {
     render() {
         let signUp = null;
         let signupBtn = null;
-        if(this.state.signingUp == true){
+        if(this.state.signingUp){
             signupBtn = (
                 <div
                     id="signup-submit-btn"
@@ -154,7 +144,6 @@ export default class Signup extends Component {
                         disabled={this.state.signingUp}
                     />
                 </div>
-                
             )
         }
         if(this.state.signedUp == undefined){
@@ -176,9 +165,10 @@ export default class Signup extends Component {
                                 disabled={this.state.signingUp}
                             />
                             <p
-                                className={
+                                className = {
                                     "signup-form-err" + (this.state.err_displayName ? "" : " hidden")
-                                }>
+                                }
+                            >
                                 {(
                                     this.state.err_displayName ?
                                         "❌ This display name is already taken." :
@@ -238,19 +228,20 @@ export default class Signup extends Component {
                     </form>
                 </React.Fragment>
             )
-        }else if(this.state.signedUp == false || this.state.signupErr.length != 0){
-            console.log()
+        }else if(!this.state.signedUp || this.state.signupErr.length !== 0){
             let errors = this.state.signupErr.map(err => {
                 return(<p>- {err} </p>)
             });
+            //TODO: add redirect for
             signUp = (
                 <div className="signup-status">
                     <img src={memeEmoji}/>
                     <h1>Oops, this is embarrassing... </h1>
-                    <h3>There apears to have been a problem creating this account.</h3>
+                    <h3>There appears to have been a problem creating this account.</h3>
                     <div className="signup-errors">
                         {errors}
                     </div>
+
                 </div>
             );
         }else{
