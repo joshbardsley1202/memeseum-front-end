@@ -9,13 +9,14 @@ import {
     Switch
 } from "react-router-dom"
 
-import Header from "./components/Header/Header"
-// import Sidenav from "./components/Sidenav/Sidenav"
-import Profile from "./components/Profile/Profile"
-import Home from "./components/Home/Home"
-import Login from './components/Login/Login'
-import About from './components/About/About'
-import Signup from './components/Signup/Signup'
+import Header from "./components/Header/Header";
+import Profile from "./components/Profile/Profile";
+import Home from "./components/Home/Home";
+import Login from "./components/Login/Login";
+import About from "./components/About/About";
+import Signup from "./components/Signup/Signup";
+import Reset from "./components/Login/Reset/Reset";
+
 class App extends Component {
     constructor() {
         super()
@@ -49,6 +50,10 @@ class App extends Component {
                             <Route
                                 path="/Signup"
                                 component={Signup}
+                            />
+                            <Route
+                                path="/reset"
+                                component={Reset}
                             />
                         </Switch>
 

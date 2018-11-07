@@ -15,10 +15,9 @@ export default class Profile extends Component {
             userData:{
                 displayName: null,
                 profilePicture: null,
-                // firstName: user.firstName,
-                // lastName: user.lastName,
-                // age: user.age,
-                // bio: user.bio
+                firstName: null,
+                lastName: null,
+                bio: null
             }
         }
         this.isUserLoggedin = this.isUserLoggedin.bind(this)

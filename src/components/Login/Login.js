@@ -18,6 +18,7 @@ export default class Login extends Component {
 
             database_err: [],
             firebase_err: "",
+            firebase_err_code: "",
             redirect: false
         };
         this.onLoginSubmit = this.onLoginSubmit.bind(this);
@@ -53,6 +54,7 @@ export default class Login extends Component {
             .catch(error => {
                 this.setState({
                     firebase_err: error.message,
+                    firebase_err_code: error.code,
                     signingIn: false
                 })
             });
@@ -162,6 +164,18 @@ export default class Login extends Component {
                                     disabled={this.state.signingIn}
                                 />
                             </div>
+                            <p
+                                className = {
+                                    "signup-form-err" + (
+                                        this.state.firebase_err_code == "auth/wrong-password" ?
+                                            "" :
+                                            " hidden"
+                                    )
+                                }
+                                id = "reset-link"
+                            >
+                                Forgot password? Click <Link to="/reset">here.</Link>
+                            </p>
                             {loginBtn}
                         </form>
                         <p>
