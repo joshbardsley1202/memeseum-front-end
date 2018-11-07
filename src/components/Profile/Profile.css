@@ -32,7 +32,7 @@
 
 .account {
     margin-left: 10%;
-    magrin-right: 10%;
+    margin-right: 10%;
     display: flex;
     justify-content: center;
 }
@@ -51,7 +51,7 @@
 
     flex: 4;
     display: flex;
-
+    margin-left: 10%;
     flex-direction: column;
 
 }
@@ -59,9 +59,9 @@
     display: flex;
 }
 .account-header h1 {
-    flex: 3;
+    flex: 2;
     margin: 0px;
-
+    text-align: left;
 }
 
 .account-options {

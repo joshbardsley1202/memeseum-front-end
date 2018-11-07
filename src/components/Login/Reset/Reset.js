@@ -3,8 +3,9 @@ import {Link, Redirect} from "react-router-dom";
 import {firebase} from '../../../firebase-config.js';
 import './Reset.css';
 import gifLoading from '../../../assets/uploading.gif';
+
 export default class Reset extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             sendingReset: false,
@@ -14,10 +15,12 @@ export default class Reset extends Component {
         this.submitResetForm = this.submitResetForm.bind(this);
         this.resetEmailField = this.resetEmailField.bind(this);
     }
-    resetEmailField(){
+
+    resetEmailField() {
         this.setState({firebase_err: ""});
     }
-    submitResetForm(event){
+
+    submitResetForm(event) {
         event.preventDefault();
         let formData = new FormData(event.target);
         firebase.auth().sendPasswordResetEmail(formData.get("email"))
@@ -31,10 +34,11 @@ export default class Reset extends Component {
                 });
             })
     }
+
     render() {
         let reset = null;
         let resetSubmitBtn = null;
-        if(this.state.sendingReset){
+        if (this.state.sendingReset) {
             resetSubmitBtn = (
                 <div
                     id="reset-submit-btn"
@@ -45,7 +49,7 @@ export default class Reset extends Component {
                     />
                 </div>
             )
-        }else{
+        } else {
             resetSubmitBtn = (
                 <div>
                     <input
@@ -76,7 +80,7 @@ export default class Reset extends Component {
                         />
                     </div>
                     <p
-                        className = {
+                        className={
                             "signup-form-err" + (
                                 this.state.firebase_err !== "" ?
                                     "" :
@@ -91,10 +95,10 @@ export default class Reset extends Component {
                         )}
                     </p>
                     <p
-                        className = {
+                        className={
                             "reset-form-complete" + (
                                 this.state.resetSent ?
-                                    "":
+                                    "" :
                                     " hidden"
                             )
                         }

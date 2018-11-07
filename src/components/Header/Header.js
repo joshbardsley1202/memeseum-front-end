@@ -1,28 +1,65 @@
-import React from "react";
-import "./Header.css";
+import React, { Component } from "react";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import Sidenav from "../Sidenav/Sidenav"
+import "./Header.css";
+import memeseumLogo from "../../assets/memeseum_main.png"
+// import Sidenav from "../Sidenav/Sidenav" TODO: Removed implementation, really only looks good semanticly on mobile.
 
-export default class Header extends React.Component {
+import homeImg from '../../assets/logos/home.png';
+import notificationsImg from '../../assets/logos/notifications.png';
+import profileImg from '../../assets/logos/profile.png';
+export default class Header extends Component {
+    constructor(props){
+        super(props);
+        this.state = {};
+    }
     render() {
         return (
             <header className="component-header">
-                <div id="logo-div">
-                    <h1 id="logo-header">Memeseum</h1>
+                <div className="header-main-logo">
+                    <img src={memeseumLogo}/>
+                </div>
+                <div className="header-main-search">
+
+                    <form>
+                        <p>BETA</p>
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="🔍 search"
+
+                        />
+                    </form>
                 </div>
                 <nav>
-                    <div
-                        id="login-div"
-                    >
+                    <div>
+                       <Link
+                           to="/"
+                           className="nav-button"
+                       >
+                           <img
+                              src={homeImg}
+                           />
+                       </Link>
+                    </div>
+                    <div>
                         <Link
-                            to="/login"
-                            id="login-link"
+                            to="/notfications"
+                            className="nav-button"
                         >
-                            Login
+                            <img
+                               src={notificationsImg}
+                            />
                         </Link>
                     </div>
                     <div>
-                        <Sidenav/>
+                        <Link
+                            to="/profile"
+                            className="nav-button"
+                        >
+                            <img
+                               src={profileImg}
+                            />
+                        </Link>
                     </div>
                 </nav>
             </header>

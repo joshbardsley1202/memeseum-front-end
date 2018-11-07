@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import "./Login.css";
 import api from '../../api.js';
-import { firebase } from '../../firebase-config.js';
+import {firebase} from '../../firebase-config.js';
 import gifLoading from '../../assets/uploading.gif';
 import memeEmoji from "../../assets/crazy_crying_emoji.png";
+
 export default class Login extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             isUserLoggedIn: false,
@@ -25,16 +26,19 @@ export default class Login extends Component {
         this.setRedirect = this.setRedirect.bind(this);
         this.resetFirebaseErr = this.resetFirebaseErr.bind(this);
     }
-    resetFirebaseErr(){
+
+    resetFirebaseErr() {
         this.setState({firebase_err: ""})
     }
-    setRedirect(){
+
+    setRedirect() {
         this.setState({
             redirect: true,
             userWasFound: true
         });
     }
-    onLoginSubmit(event){
+
+    onLoginSubmit(event) {
         event.preventDefault();
         let formData = new FormData(event.target);
         const loginCredentials = {
@@ -44,13 +48,15 @@ export default class Login extends Component {
         this.authWithEmailPassword(loginCredentials);
     }
 
-    authWithEmailPassword(loginCredentials){
-        this.setState({ signingIn: true });
+    authWithEmailPassword(loginCredentials) {
+        this.setState({signingIn: true});
         firebase.auth().signInWithEmailAndPassword(
             loginCredentials.email,
             loginCredentials.password
         )
-            .then(res => { this.retreieveUserData(res.user.displayName); })
+            .then(res => {
+                this.retreieveUserData(res.user.displayName);
+            })
             .catch(error => {
                 this.setState({
                     firebase_err: error.message,
@@ -59,10 +65,11 @@ export default class Login extends Component {
                 })
             });
     }
-    retreieveUserData(displayName){
+
+    retreieveUserData(displayName) {
         fetch(api.userInfo_Data + displayName)
             .then(res => {
-                if(res.status === 404){
+                if (res.status === 404) {
                     this.setState({
                         userWasFound: false,
                         database_err: [...this.state.database_err, res.toString()]
@@ -72,7 +79,7 @@ export default class Login extends Component {
                 else return res.json()
             })
             .then(resJSON => {
-                if(resJSON){
+                if (resJSON) {
                     alert('Welcome back, ' + resJSON.user.displayName + "! 😁");
                     this.setRedirect();
                 }
@@ -83,16 +90,17 @@ export default class Login extends Component {
                 })
             })
     }
+
     render() {
-        if(this.state.redirect){
-            return(
+        if (this.state.redirect) {
+            return (
                 <Redirect to='/profile'/>
             )
-        }else{
+        } else {
             let login = null;
-            if(this.state.database_err.length != 0){
+            if (this.state.database_err.length != 0) {
                 let errors = this.state.database_err.map(err => {
-                    return(<p>- {err} </p>)
+                    return (<p>- {err} </p>)
                 });
                 login = (
                     <div className="signup-status">
@@ -104,16 +112,16 @@ export default class Login extends Component {
                         </div>
                     </div>
                 )
-            }else{
+            } else {
                 let loginBtn = null;
-                if(this.state.signingIn){
+                if (this.state.signingIn) {
                     loginBtn = (
                         <div
                             id="login-submit-btn"
                             className="loggingin-btn"
                         ><img src={gifLoading}/></div>
                     )
-                }else{
+                } else {
                     loginBtn = (
                         <div>
                             <input
@@ -132,7 +140,7 @@ export default class Login extends Component {
                             onSubmit={this.onLoginSubmit}
                         >
                             <p
-                                className = {
+                                className={
                                     "signup-form-err" + (this.state.firebase_err !== "" ? "" : " hidden")
                                 }
                             >
@@ -165,14 +173,14 @@ export default class Login extends Component {
                                 />
                             </div>
                             <p
-                                className = {
+                                className={
                                     "signup-form-err" + (
                                         this.state.firebase_err_code == "auth/wrong-password" ?
                                             "" :
                                             " hidden"
                                     )
                                 }
-                                id = "reset-link"
+                                id="reset-link"
                             >
                                 Forgot password? Click <Link to="/reset">here.</Link>
                             </p>
@@ -184,7 +192,7 @@ export default class Login extends Component {
                     </React.Fragment>
                 )
             }
-            return(
+            return (
                 <section className="component-login">
                     {login}
                 </section>

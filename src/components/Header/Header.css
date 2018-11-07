@@ -3,23 +3,46 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 15px 30px 15px;
+    padding: 10px;
     color: rgb(17, 73, 55);
     border-bottom: 1px solid lightgray;
     background-color: rgb(255, 255, 255);
 }
 
-#logo-div {
-    flex: 10;
+.header-main-logo {
+    flex: 1;
 }
 
-#logo-div h1 {
-    margin: 0px;
-    font-size: 4rem;
+.header-main-search {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-main-search form {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-main-search form input {
+    width: 40%;
+    max-width: 250px;
+    padding: 3px 6px 3px 6px;
+    background-color: white;
+    border: 1px solid lightgray;
+    font-size: 15px;
+}
+
+.header-main-logo img {
+    width: 300px;
+    height: auto
 }
 
 .component-header nav {
-    flex: 2;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,13 +55,19 @@
     justify-content: center;
 }
 
-#login-link {
-    font-size: 20px;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 10px 20px 10px 20px;
-    text-decoration: none;
-    color: rgb(17, 73, 55);
-    background-color: rgba(211, 211, 211, 0.4);
-
+.nav-button {
+    background-color: transparent;
+    border: 0px;
 }
+
+.nav-button img {
+    max-width: 28px;
+}
+
+.nav-button:hover {
+    cursor: pointer;
+}
+.target {
+    border-bottom: 1px solid grey;
+}
+

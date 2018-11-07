@@ -5,6 +5,7 @@ import loading from '../../assets/loading.gif'
 import apis from "../../api";
 import Upload from "../Upload/Upload.js";
 import "./Home.css"
+
 export default class Home extends Component {
     constructor() {
         super()

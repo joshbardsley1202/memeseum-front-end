@@ -1,4 +1,4 @@
-.component-reset{
+.component-reset {
     margin-top: 100px;
     font-family: "Fredoka One";
     display: flex;
@@ -6,10 +6,12 @@
     align-items: center;
     flex-direction: column;
 }
-.component-reset h1{
+
+.component-reset h1 {
     font-size: 40px;
 }
-.component-reset form{
+
+.component-reset form {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,39 +19,46 @@
     width: 60%;
     max-width: 400px;
 }
-.component-reset form div{
+
+.component-reset form div {
     display: flex;
     flex-direction: column;
     font-size: 20px;
     margin-top: 20px;
     width: 100%;
 }
-.component-reset form div input{
+
+.component-reset form div input {
     padding: 10px;
     border: 1px solid black;
     font-size: 20px;
 }
-#reset-submit-btn{
+
+#reset-submit-btn {
     font-family: "Fredoka One";
     color: white;
     border: 0px;
     border-radius: 10px;
     background-color: springgreen;
 }
-#reset-submit-btn:hover{
+
+#reset-submit-btn:hover {
     cursor: pointer;
     background-color: limegreen;
 }
-.reseting-btn{
+
+.reseting-btn {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.reseting-btn img{
+
+.reseting-btn img {
     width: 40px;
 }
-.reset-form-complete{
+
+.reset-form-complete {
     color: green;
     font-style: italic;
 }

@@ -1,6 +1,7 @@
-import React, { Component, Fragment} from "react";
+import React, {Component, Fragment} from "react";
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
-import { firebase } from '../../firebase-config'
+import {firebase} from '../../firebase-config'
+import api from '../../api.js';
 import loading from '../../assets/loading.gif'
 import defaultProfilePicture from '../../assets/default-profile-picture.png'
 import "./Profile.css";
@@ -10,9 +11,9 @@ export default class Profile extends Component {
         super(props)
         this.state = {
             userWasFound: undefined,
-            isAuthenticated: true, //TODO: For development purposes only, reset to undefined
+            isAuthenticated: undefined, //TODO: For development purposes only, reset to undefined
             dataHasRendered: false,
-            userData:{
+            userData: {
                 displayName: null,
                 profilePicture: null,
                 firstName: null,
@@ -23,53 +24,57 @@ export default class Profile extends Component {
         this.isUserLoggedin = this.isUserLoggedin.bind(this)
         this.retreieveUserData = this.retreieveUserData.bind(this)
     }
-    isUserLoggedin(){
+
+    isUserLoggedin() {
         firebase.auth().onAuthStateChanged(user => {
-            if(user) {
+            if (user) {
                 this.setState({
-                    isAuthenticated: true,
-                    userData:{ displayName: user.displayName }
-                }, () => { this.retreieveUserData() })
-            }else{
+                    isAuthenticated: true
+                }, () => {
+                    this.retreieveUserData(user.displayName)
+                })
+            } else {
                 this.setState({
                     isAuthenticated: false
                 })
             }
         });
     }
-    retreieveUserData(displayName){
-        // fetch(apis.userInfo + displayName)
-        //     .then(res => {
-        //         if(res.status === 404){
-        //             this.setState({ userWasFound: false })
-        //             return undefined
-        //         }
-        //         else return res.json()
-        //     })
-        //     .then(resJSON => {
-        //         if(resJSON === undefined) alert('Oops, something went wrong. \n User was not found in our database.')
-        //         else{
-        //             this.setState({
-        //                 userWasFound: true,
-        //                 userData: {
-        //                     pictureUrl: user.profilePicture
-        //                     //TODO: Data memebers that you can add in time if you'd like.
-        //                     // firstName: user.firstName,
-        //                     // lastName: user.lastName,
-        //                     // age: user.age,
-        //                     // bio: user.bio
-        //                 }
-        //             })
-        //         }
-        //     })
-        //     .catch(error => console.error(error))
+
+    retreieveUserData(displayName) {
+        fetch(api.userInfo_Data + displayName)
+            .then(res => {
+                if (res.status === 404) {
+                    this.setState({userWasFound: false})
+                    return undefined
+                }
+                else return res.json()
+            })
+            .then(resJSON => {
+                if (resJSON === undefined) alert('Oops, something went wrong. \n User was not found in our database.')
+                else {
+                    this.setState({
+                        userWasFound: true,
+                        userData: {
+                            displayName,
+                            pictureUrl: resJSON.user.profilePicture,
+                            firstName: resJSON.user.firstName,
+                            lastName: resJSON.user.lastName,
+                            bio: resJSON.user.bio
+                        }
+                    })
+                }
+            })
+            .catch(error => console.error(error))
     }
-    componentDidMount(){
-        // this.isUserLoggedin()
+
+    componentDidMount() {
+        this.isUserLoggedin()
     }
+
     render() {
         var profile = null
-        if(this.state.isAuthenticated == undefined){
+        if (this.state.isAuthenticated == undefined) {
             profile = (
                 <div className="loading-gif">
                     <img
@@ -77,7 +82,7 @@ export default class Profile extends Component {
                     />
                 </div>
             )
-        }else if(this.state.isAuthenticated == false){
+        } else if (this.state.isAuthenticated == false) {
             profile = (
                 <React.Fragment>
                     <h1>Oops, looks like your not signed in.</h1>
@@ -90,7 +95,7 @@ export default class Profile extends Component {
                     </div>
                 </React.Fragment>
             )
-        }else{
+        } else {
             profile = (
                 <React.Fragment>
                     <div className="account">
@@ -101,14 +106,15 @@ export default class Profile extends Component {
                         </div>
                         <div className="account-info">
                             <div className="account-header">
-                                <h1>[NAME HERE]</h1>
+                                <h1>{this.state.userData.displayName}</h1>
                                 <div className="account-options">
                                     <button>Logout</button>
                                     <button>Edit</button>
                                 </div>
-
                             </div>
                             <div className="profile-info">
+                                {/*<h3>{this.state.userData.firstName + " " + this.state.userData.lastName}</h3>*/}
+                                <p>{this.state.userData.bio}</p>
 
                             </div>
                         </div>
