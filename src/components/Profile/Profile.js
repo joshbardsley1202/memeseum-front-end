@@ -73,7 +73,7 @@ export default class Profile extends Component {
     }
 
     render() {
-        var profile = null
+        var profile = null;
         if (this.state.isAuthenticated == undefined) {
             profile = (
                 <div className="loading-gif">

@@ -67,6 +67,7 @@
 .nav-button:hover {
     cursor: pointer;
 }
+
 .target {
     border-bottom: 1px solid grey;
 }
