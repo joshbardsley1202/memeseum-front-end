@@ -15,13 +15,14 @@ import Login from "./components/Login/Login";
 import About from "./components/About/About";
 import Signup from "./components/Signup/Signup";
 import Reset from "./components/Login/Reset/Reset";
+import Welcome from './components/Welcome/Welcome.js';
 
 class App extends Component {
     constructor() {
-        super()
+        super();
         this.state = {
             isAuthenticated: true
-        }
+        };
         this.isUserLoggedin = this.isUserLoggedin.bind(this);
     }
 
@@ -33,7 +34,7 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.isUserLoggedin();
+        // this.isUserLoggedin(); TODO:
     }
 
     render() {
@@ -66,6 +67,10 @@ class App extends Component {
                         <Route
                             path="/reset"
                             component={Reset}
+                        />
+                        <Route
+                            path="/welcome"
+                            component={Welcome}
                         />
                     </Switch>
                 </div>

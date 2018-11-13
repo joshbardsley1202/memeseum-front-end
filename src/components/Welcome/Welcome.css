@@ -1,0 +1,69 @@
+.component-welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Fredoka One";
+}
+
+.component-welcome h2 {
+    text-align: center;
+    margin: 0px 0px 30px 0px;
+}
+
+.component-welcome h3 {
+    margin: 0px;
+}
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.login-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.login-error a {
+    font-size: 20px;
+    text-decoration: none;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 40px 10px 40px;
+    background-color: springgreen;
+    width: 100%;
+    text-align: center;
+}
+
+.login-error a:hover {
+    background-color: limegreen;
+}
+
+/*.urban-dictionary{*/
+/*background-color: white;*/
+/*width: 80%;*/
+/*max-width: 1000px;*/
+
+/*font-family: "Times New Roman";*/
+/*}*/
+/*.urban-dictionary img{*/
+/*max-width: 200px;*/
+/*width: 40%;*/
+/*}*/
+/*.urban-dictionary-img{*/
+/*background-color: rgb(22,27,44);*/
+/*display: flex;*/
+/*align-items: center;*/
+/*justify-content: center;*/
+/*}*/
+/*#the-memeseum{*/
+/*color: dodgerblue;*/
+/*text-align: left;*/
+/*}*/
