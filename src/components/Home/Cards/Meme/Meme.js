@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import defaultProfilePicture from '../../../assets/default-profile-picture.png'
+import defaultProfilePicture from '../../../../assets/default-profile-picture.png'
 import './Meme.css'
 
 export default class Meme extends Component {

@@ -3,9 +3,9 @@ import React, {Component} from "react"
 import apis from "../../api";
 import "./Home.css"
 
-import Cards from "../Cards/Cards"
+import Cards from "./Cards/Cards"
 import loading from '../../assets/loading.gif'
-import Upload from "../Upload/Upload.js";
+import Upload from "./Upload/Upload.js";
 import firebase from "firebase";
 
 
@@ -18,6 +18,7 @@ export default class Home extends Component {
             memes: [],
             isLoaded: false,
             isAuthenticated: undefined,
+            displayName: null
         };
         this.getMemes = this.getMemes.bind(this);
         this.findCategories = this.findCategories.bind(this);
@@ -30,7 +31,10 @@ export default class Home extends Component {
 
     isUserLoggedin() {
         firebase.auth().onAuthStateChanged(user => {
-            if (user) this.setState({isAuthenticated: true});
+            if (user) this.setState({
+                isAuthenticated: true,
+                displayName: user.displayName
+            });
             else this.setState({isAuthenticated: false});
         });
     }
@@ -92,6 +96,7 @@ export default class Home extends Component {
                     <Upload
                         categories={this.state.categories}
                         getMemes={this.getMemes}
+                        displayName={this.state.displayName}
                     />
                 )
             } else {

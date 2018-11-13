@@ -3,7 +3,9 @@ import {Redirect} from "react-router-dom";
 import {firebase} from '../../firebase-config'
 import api from '../../api.js';
 import loading from '../../assets/loading.gif'
+import settings from '../../assets/logos/settings.png'
 import defaultProfilePicture from '../../assets/default-profile-picture.png'
+
 import "./Profile.css";
 
 export default class Profile extends Component {
@@ -20,6 +22,8 @@ export default class Profile extends Component {
                 lastName: null,
                 bio: null
             }
+
+
         };
         this.isUserLoggedin = this.isUserLoggedin.bind(this);
         this.retreieveUserData = this.retreieveUserData.bind(this);
@@ -73,7 +77,7 @@ export default class Profile extends Component {
     }
 
     render() {
-        var profile = null;
+        let profile = null;
         if (this.state.isAuthenticated == undefined) {
             profile = (
                 <div className="loading-gif">
@@ -85,7 +89,7 @@ export default class Profile extends Component {
         } else if (this.state.isAuthenticated == false) {
             return (
                 <Redirect
-                    to="/welcome/"
+                    to="/welcome"
                 />
             )
         } else {
@@ -101,11 +105,15 @@ export default class Profile extends Component {
                             <div className="account-header">
                                 <h1>{this.state.userData.displayName}</h1>
                                 <div className="account-options">
-                                    <button>
-
+                                    <button
+                                        className="btn-edit"
+                                    >
+                                        Edit
                                     </button>
-                                    <button>
-
+                                    <button
+                                        className="btn-settings"
+                                    >
+                                        <img src={settings}/>
                                     </button>
                                 </div>
                             </div>

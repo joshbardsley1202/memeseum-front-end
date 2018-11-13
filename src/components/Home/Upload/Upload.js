@@ -1,33 +1,38 @@
-import React from "react";
-import UploadModal from './UploadModal/UploadModal'
+import React, {Component} from "react";
+import UploadModal from "./UploadModal/UploadModal.js";
 import "./Upload.css";
-import {firebase} from "../../firebase-config"
-import api from '../../api'
+import {firebase} from "../../../firebase-config.js";
+import api from "../../../api.js";
 
-export default class Upload extends React.Component {
+export default class Upload extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             fileSelected: false,
-            currentUpload: null,
             isUploaded: undefined,
             uploadProgress: undefined,
             modalIsOpen: false,
             memePreview: undefined,
             newCategory: "",
-            memeCategories: []
-        }
-        this.fileSelected = this.fileSelected.bind(this)
-        this.returnFileSize = this.returnFileSize.bind(this)
-        this.uploadMeme = this.uploadMeme.bind(this)
-        this.openModal = this.openModal.bind(this)
-        this.closeModal = this.closeModal.bind(this)
-        this.addCategory = this.addCategory.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+            memeCategories: [],
+            displayName: props.displayName
+        };
+        this.fileSelected = this.fileSelected.bind(this);
+        this.returnFileSize = this.returnFileSize.bind(this);
+        this.uploadMeme = this.uploadMeme.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.addCategory = this.addCategory.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    openModal() { this.setState({modalIsOpen: true}) }
-    closeModal() { this.setState({modalIsOpen: false}) }
+    openModal() {
+        this.setState({modalIsOpen: true});
+    }
+
+    closeModal() {
+        this.setState({modalIsOpen: false});
+    }
 
     fileSelected(event) {
         if (event.target.files[0]) {
@@ -35,56 +40,57 @@ export default class Upload extends React.Component {
                 fileSelected: true,
                 currentUpload: event.target.files[0],
                 memePreview: URL.createObjectURL(event.target.files[0])
-            })
+            });
         } else {
             this.setState({
                 fileSelected: false,
                 currentUpload: null
-            })
+            });
         }
     }
 
     returnFileSize(number) {
-        var imgSize = undefined
+        let imgSize = undefined;
         if (number < 1024) {
             imgSize = number + 'bytes';
         } else if (number >= 1024 && number < 1048576) {
             imgSize = (number / 1024).toFixed(1) + 'KB';
         } else if (number >= 1048576) {
             imgSize = (number / 1048576).toFixed(1) + 'MB';
-        } else return false
+        } else return false;
         if (imgSize.indexOf('M') !== -1) {
-            imgSize = imgSize.substring(0, imgSize.indexOf('M'))
-            if (parseInt(imgSize) <= 5) return true
-            else return false
+            imgSize = imgSize.substring(0, imgSize.indexOf('M'));
+            return parseInt(imgSize) <= 5;
         } else return true
     }
-    handleChange(event){
-        this.setState({ newCategory: event.target.value })
+
+    handleChange(event) {
+        this.setState({newCategory: event.target.value})
     }
-    addCategory(){
-        const newCategory = this.state.newCategory
+
+    addCategory() {
+        const newCategory = this.state.newCategory;
         this.setState({
             memeCategories: this.state.memeCategories.concat(newCategory),
             newCategory: ""
-        })
+        });
     }
+
     uploadMeme(event) {
-        event.preventDefault()
+        event.preventDefault();
         this.setState({
             isUploaded: false,
             uploadProgress: 0
-        })
-        
-        var formData = new FormData(event.target)
-        var file = formData.get('file')
+        });
+        let formData = new FormData(event.target);
+        let file = formData.get('file');
         if (this.returnFileSize(file.size)) {
-            var storage = firebase.app().storage();
-            var storageRef = firebase.storage().ref();
-            var metadata = {contentType: file.type};
-            var uploadTask = storageRef.child(file.name).put(file, metadata);
+            let storage = firebase.app().storage(); // Unused
+            let storageRef = firebase.storage().ref();
+            let metadata = {contentType: file.type};
+            let uploadTask = storageRef.child(file.name).put(file, metadata);
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
-                this.setState({ uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%' })
+                this.setState({uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'});
                 switch (snapshot.state) {
                     case firebase.storage.TaskState.PAUSED:
                         console.log('Upload is paused');
@@ -93,7 +99,6 @@ export default class Upload extends React.Component {
                         break;
                 }
             }, error => {
-                console.log(error)
                 switch (error.code) {
                     case 'storage/unauthorized':
                         break;
@@ -105,48 +110,39 @@ export default class Upload extends React.Component {
             }, () => {
                 uploadTask.snapshot.ref.getDownloadURL()
                     .then(downloadURL => {
-                        var currentDate = new Date()
-                        var formattedDate = (
-                            currentDate.getMonth() + '/' +
-                            currentDate.getDay() + '/' +
-                            currentDate.getFullYear()
-                        )
-                        var postData = {
+                        let postData = {
                             url: downloadURL,
-                            user: "TEST",
+                            user: this.state.displayName,
                             category: "TEST CATEGORY",
                             likes: 0
-
                         };
-                        var postOptions = {
+                        let postOptions = {
                             method: 'POST',
                             body: JSON.stringify(postData),
                             headers: new Headers({'Content-type': 'application/json'})
-                        }
+                        };
                         fetch(api.memes_Data, postOptions)
                             .then(res => {
-                                if (res.status === 404 || res.status === 500) return undefined
-                                else return res.json()
+                                let rStat = res.status;
+                                if (rStat == 404 || rStat == 500) return;
+                                else return res.json();
                             })
                             .then(resJSON => {
-                                if (resJSON === undefined) {
-                                    this.setState({isUploaded: false}, () => {
-                                        alert('Oops, something went wrong. \n the file has been uploaded, but our database was not able to retrieve the meta data.')
-                                        this.setState({
-                                            isUploaded: undefined,
-                                            exifEdit: false,
-                                            fileSelected: false,
-                                            currentUpload: null,
-                                        })
-                                    })
-                                } else {
+                                if (resJSON) {
                                     this.setState({
                                         isUploaded: true,
                                         modalIsOpen: false
                                     }, () => {
-                                        alert('Meme Uploaded.')
+                                        alert('Meme Uploaded.');
                                         this.props.getMemes();
-                                    })
+                                    });
+                                } else {
+                                    this.setState({
+                                        isUploaded: false,
+                                        fileSelected: false,
+                                    }, () => {
+                                        alert('Something went wrong uploading this meme.');
+                                    });
                                 }
                             })
                     });

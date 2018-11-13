@@ -37,6 +37,7 @@ export default class Signup extends Component {
         event.preventDefault();
         let formData = new FormData(event.target);
         let signUpCredentials = {
+
             displayName: formData.get('displayName'),
             email: formData.get('email'),
             password1: formData.get('password1'),

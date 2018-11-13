@@ -1,7 +1,7 @@
 import Modal from 'react-modal'
 import './UploadModal.css'
 import React from "react";
-import uploadingGif from "../../../assets/uploading.gif"
+import uploadingGif from "../../../../assets/uploading.gif"
 
 const customStyles = {
     content: {
@@ -18,7 +18,7 @@ const customStyles = {
 
 const UploadModal = (props) => {
     var submitBtn = null;
-    if(props.isUploaded == undefined){
+    if (props.isUploaded == undefined) {
         submitBtn = (
             <input
                 className='upload-btn'
@@ -26,20 +26,20 @@ const UploadModal = (props) => {
                 value="Upload"
             />
         )
-    }else if(props.isUploaded == false){
+    } else if (props.isUploaded == false) {
         submitBtn = (
             <div
                 className='upload-btn'
                 type='submit'
                 value="Upload"
-                
+
             >
                 <img
                     src={uploadingGif}
                 />
             </div>
         )
-    }else{
+    } else {
         submitBtn = (
             <React.Fragment>
                 <input
@@ -55,11 +55,11 @@ const UploadModal = (props) => {
             isOpen={props.modalIsOpen}
             onRequestClose={props.closeModal}
             style={customStyles}
-            contentLabel="Edit Profile"
+            contentLabel="Upload a meme"
         >
             <section className="component-upload-modal">
                 <div className={props.memePreview ? "meme-preview" : "hidden-preview"}>
-                    <img src={props.memePreview} />
+                    <img src={props.memePreview}/>
                 </div>
                 <div className="meme-info">
                     <h1> Upload a meme </h1>
@@ -97,22 +97,22 @@ const UploadModal = (props) => {
                             </section>
                             <div className="added-categories">
                                 {
-                                    props.memeCategories.length>0
+                                    props.memeCategories.length > 0
                                         ?
-                                            props.memeCategories.map(category => (
-                                                <div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={this.removeMeme}
-                                                    >
-                                                        ❌
-                                                    </button>
-                                                    <p>{category}</p>
+                                        props.memeCategories.map(category => (
+                                            <div>
+                                                <button
+                                                    type="button"
+                                                    onClick={this.removeMeme}
+                                                >
+                                                    ❌
+                                                </button>
+                                                <p>{category}</p>
 
-                                                </div>
-                                            ))
+                                            </div>
+                                        ))
                                         :
-                                            null
+                                        null
                                 }
                             </div>
                             <textarea
