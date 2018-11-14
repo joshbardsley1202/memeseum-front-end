@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
-import Modal from 'react-modal';
-
+import React, {Component} from "react";
+import Modal from "react-modal";
+import Cropper from 'react-cropper'
+import "./EditProfile.css";
+import 'cropperjs/dist/cropper.css'
 const customStyles = {
     content: {
         top: '50%',
@@ -13,15 +15,100 @@ const customStyles = {
         borderRadius: '5px'
     }
 };
+export default class EditProfile extends Component {
+    constructor (props) {
+        super(props);
+        this.state={
+            name: props.name,
+            bio: props.bio
+        };
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onBioChange = this.onBioChange.bind(this);
+        this.onCropEnd = this.onCropEnd.bind(this)
+        this.getBlob = this.getBlob.bind(this)
 
-const EditProfile = (props) => {
-    return(
-        <Modal
-
-        >
-
-        </Modal>
-    )
-};
-
-export default EditProfile
+    }
+    onNameChange(event){ this.setState({ name: event.target.value }); }
+    onBioChange(event){ this.setState({ bio: event.target.value }); }
+    getBlob(blob){
+        const file = URL.createObjectURL(blob);
+        this.props.handleCrop(file);
+    }
+    onCropEnd(){ this.refs.cropper.getCroppedCanvas().toBlob(this.getBlob); } // Janky as fuck.
+    render(props){
+        let profileImage = null;
+        if(this.props.profilePreview){
+            profileImage = (
+                <section className="profile-edit-preview-container">
+                    <Cropper
+                        ref='cropper'
+                        src={this.props.profilePreview}
+                        style={{
+                            height: '100%',
+                            width: '100%'
+                        }}
+                        aspectRatio={1 / 1}
+                        guides={false}
+                        cropend={this.onCropEnd}
+                    />
+                </section>
+            )
+        }
+        return(
+            <Modal
+                isOpen={this.props.editModalOpen}
+                onRequestClose={this.props.closeEditModal}
+                style={customStyles}
+            >
+                <section className="component-edit-profile">
+                    <h1>Edit Profile </h1>
+                    <form>
+                        <p className="head-info">Profile Information</p>
+                        <div className="edit-info-field">
+                            <label>Name</label>
+                            <p className="foot-info">(Optional) First and last name.</p>
+                            <input
+                                className="edit-form-input"
+                                type="text"
+                                name="name"
+                                onChange={this.onNameChange}
+                                value={this.state.name}
+                            />
+                        </div>
+                        <div className="edit-info-field">
+                            <label>Bio</label>
+                            <p className="foot-info">(Optional) A brief description of yourself shown on your profile.</p>
+                            <textarea
+                                className="edit-form-input"
+                                type="text"
+                                name="bio"
+                                onChange={this.onBioChange}
+                                value={this.state.bio}
+                            />
+                        </div>
+                        <p className="head-info">Images</p>
+                        <div className="edit-info-field">
+                            {profileImage}
+                            <label>Profile Image</label>
+                            <p className="foot-info">Images must be .png or .jpg format</p>
+                            <label
+                                className='cabinet upload-btn upload-field'
+                                id="pro-pic-select"
+                            >
+                                Browse
+                                <input
+                                    className='file-select upload-field'
+                                    onChange={this.props.fileSelected}
+                                    type='file'
+                                    name='file'
+                                    accept=".png, .jpg, .jpeg"
+                                    required
+                                />
+                            </label>
+                        </div>
+                    </form>
+                </section>
+            </Modal>
+        )
+    }
+}

@@ -1,0 +1,54 @@
+.component-edit-profile {
+    font-family: "Fredoka One";
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    min-width: 400px;
+}
+
+.component-edit-profile p {
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.head-info {
+    border-bottom: 1px solid grey;
+}
+
+.foot-info {
+    margin: 0;
+    font-size: 14px;
+    color: dimgrey;
+}
+
+.edit-info-field {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-form-input {
+    font-size: 18px;
+    font-family: Helvetica;
+    width: 80%;
+}
+
+.profile-edit-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+.profile-edit-preview {
+    width: 200px;
+    height: 200px;
+
+}
+#pro-pic-select{
+    text-align: center;
+
+}
+

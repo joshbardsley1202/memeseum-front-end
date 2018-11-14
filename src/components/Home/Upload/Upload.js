@@ -38,13 +38,11 @@ export default class Upload extends Component {
         if (event.target.files[0]) {
             this.setState({
                 fileSelected: true,
-                currentUpload: event.target.files[0],
                 memePreview: URL.createObjectURL(event.target.files[0])
             });
         } else {
             this.setState({
                 fileSelected: false,
-                currentUpload: null
             });
         }
     }
