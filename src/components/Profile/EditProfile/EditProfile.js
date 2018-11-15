@@ -68,6 +68,12 @@ export default class EditProfile extends Component {
                 </section>
             )
         }
+        let updating = null;
+        if(this.props.updating){
+            updating = (
+                <p>Updating...</p>
+            )
+        }
         return (
             <Modal
                 isOpen={this.props.editModalOpen}
@@ -83,9 +89,8 @@ export default class EditProfile extends Component {
                             >Save
                             </button>
                         </div>
-
                     </div>
-
+                    {updating}
                     <form>
                         <p className="head-info">Profile Information</p>
                         <div className="edit-info-field">

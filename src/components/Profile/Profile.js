@@ -55,7 +55,6 @@ export default class Profile extends Component {
         this.onBioChange = this.onBioChange.bind(this);
 
         this.onEditSubmit = this.onEditSubmit.bind(this);
-        this.uploadProfilePicture = this.uploadProfilePicture.bind(this)
 
     }
 
@@ -85,111 +84,108 @@ export default class Profile extends Component {
 
 
     onEditSubmit() {
-        let changes = {}
-        function uploadProfilePicture(){
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
-                this.setState({uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'});
-                switch (snapshot.state) {
-                    case firebase.storage.TaskState.PAUSED:
-                        console.error('Upload is paused');
-                        break;
-                    case firebase.storage.TaskState.RUNNING:
-                        break;
-                }
-            }, error => {
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                        console.error('FIREBASE_ERR: storage/unauthorized');
-                        break;
-                    case 'storage/canceled':
-                        console.error('FIREBASE_ERR: storage/canceled');
-                        break;
-                    case 'storage/unknown':
-                        console.error('FIREBASE_ERR: storage/unknown');
-                        break;
-                }
-            }, () => {
-                uploadTask.snapshot.ref.getDownloadURL()
-                    .then(downloadURL => {
-                        return downloadURL
-                    });
-            });
-        }
         let changes = {};
-        let file = this.state.currentUpload;
-        this.setState({});
-        if (this.state.currentUpload) {
-            this.setState({updating: true});
-            let file = this.state.currentUpload;
-            let storage = firebase.app().storage(); // Unused
-            let storageRef = firebase.storage().ref();
-            let metadata = {contentType: file.type};
-            let uploadTask = storageRef.child(
-                'UserProfilePictures/' + this.state.userData.displayName
-            ).put(file, metadata);
-            if (this.returnFileSize(file.size)) {
+        var postUpdate = (profilePicture, fireBaseError) => {
+            if (!fireBaseError) {
+                if (profilePicture) changes.profilePicture = profilePicture;
+                let postOptions = {
+                    method: 'PUT',
+                    body: JSON.stringify(changes),
+                    headers: new Headers({'Content-type': 'application/json'})
+                };
+                fetch(api.userInfo_Data + this.state.userData.displayName, postOptions)
+                    .then(res => {
+                        let rStat = res.status;
+                        if (rStat == 404 || rStat == 500) return;
+                        else return res.json();
+                    })
+                    .then(resJSON => {
+                        if (resJSON) {
+                            this.setState({
+                                updating: false,
+                                editModalOpening: false
+                            }, () => {
+                                alert("Profile Updated ✅");
+                                this.retreieveUserData(this.state.userData.displayName);
+                            });
+                        } else {
+                            this.setState({
+                                profilePictureUploaded: false,
+                                editModalOpen: false
+                            }, () => {
+                                alert('Something went wrong updating your profile ❌');
+                            });
+                        }
+                    })
+            } else {
+                this.setState({
+                    profilePictureUploaded: (fireBaseError ? false : true),
+                    uploading: false
+                }, () => {
+                    alert("Something went wrong with uploading your profile picture.")
+                });
+            }
+        };
+        if (this.state.newName) changes.name = this.state.newName;
+        if (this.state.newBio) changes.bio = this.state.newBio;
+        if (
+            Object.keys(changes).length !== 0 ||
+            this.state.currentUpload !== null
+        ) {
+            if (this.state.currentUpload != null) {
+                var fireBaseError = null;
+                let file = this.state.currentUpload;
+                let storage = firebase.app().storage(); // Unused
+                let storageRef = firebase.storage().ref();
+                let metadata = {contentType: file.type};
+                let uploadTask = storageRef.child('UserProfilePictures/' + this.state.displayName).put(file, metadata);
                 this.setState({
                     profilePictureUploaded: false,
-                    uploadProgress: 0
+                    uploadProgress: 0,
+                    updating: true
                 });
-                if (this.state.userData.profilePicture !== null) {
-                    let desertRef = firebase.storage().refFromURL(this.state.userData.profilePicture);
-                    desertRef.delete()
-                        .then(this.uploadProfilePicture())
-                        .catch((error) => {
-                            console.error(error)
-                        })
+                if (this.returnFileSize(file.size)) {
+                    if (this.state.userData.profilePicture !== null) {
+                        let desertRef = firebase.storage().refFromURL(this.state.userData.profilePicture);
+                        desertRef.delete()
+                            .then(() => {
+                                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+                                }, error => {
+                                    fireBaseError = error.code
+                                }, () => {
+                                    uploadTask.snapshot.ref.getDownloadURL()
+                                        .then(downloadURL => {
+                                            postUpdate(downloadURL, fireBaseError)
+                                        });
+                                });
+                            })
+                            .catch((error) => {
+                                console.error(error);
+                            })
+                    } else {
+                        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+                        }, error => {
+                            fireBaseError = error.code
+                        }, () => {
+                            uploadTask.snapshot.ref.getDownloadURL()
+                                .then(downloadURL => {
+                                    postUpdate(downloadURL);
+                                });
+                        });
+                    }
                 } else {
-
+                    this.setState({
+                        updating: false,
+                        profilePictureUploaded: false
+                    });
+                    alert("File must be smaller than 5MBs.");
                 }
+            } else {
+                postUpdate();
             }
-            else {
-                alert('Sorry, this file is too big \n Max size is 5MB');
-                this.setState({
-                    profilePictureUploaded: false
-                })
-            }
-
-
+        } else {
+            alert("Nothing to update.");
         }
-        // if (this.state.profilePictureUploaded || this.state.profilePictureUploaded === null) {
-        //     let postOptions = {
-        //         method: 'PUT',
-        //         body: JSON.stringify({
-        //             name: this.state.name,
-        //             bio: this.state.bio
-        //         }),
-        //         headers: new Headers({'Content-type': 'application/json'})
-        //     };
-        //     console.log(changes);
-        //     fetch(api.userInfo_Data, postOptions)
-        //         .then(res => {
-        //             let rStat = res.status;
-        //             if (rStat == 404 || rStat == 500) return;
-        //             else return res.json();
-        //         })
-        //         .then(resJSON => {
-        //             if (resJSON) {
-        //                 this.setState({
-        //                     updating: false,
-        //                 }, () => {
-        //                     this.retreieveUserData()
-        //                 });
-        //             } else {
-        //                 this.setState({
-        //                     profilePictureUploaded: false,
-        //                 }, () => {
-        //                     alert('Something went wrong updating your profile.');
-        //                 });
-        //             }
-        //         })
-        // } else {
-        //     this.setState({
-        //         updating: false
-        //     })
-        // }
-
-
     }
 
     handleCrop(image) {
@@ -360,6 +356,7 @@ export default class Profile extends Component {
                         handleCrop={this.handleCrop}
                         currentUpload={this.state.currentUpload}
 
+                        updating={this.state.updating}
                         onEditSubmit={this.onEditSubmit}
                     />
                     <Settings
