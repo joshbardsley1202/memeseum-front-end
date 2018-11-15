@@ -25,45 +25,176 @@ export default class Profile extends Component {
                 name: null,
                 bio: null
             },
+            newName: null,
+            newBio: null,
             editModalOpen: true, // TODO: Reset to false
             settingsModalOpen: false,
 
-            profilePictureUploaded: undefined,
-            profilePictureSelected: false,
-            currentCrop: null,
-            profilePreview: null,
-            uploadProgress: undefined,
+            profilePictureUploaded: undefined, // Determines wether the file has been uploaded
+            profilePictureSelected: false, // Determines if the use has selected a picture to upload
+            currentUpload: null, // Holds the value of a [type] BLOB that has the image with crop that the user wants to upload
+            profilePreview: null, // Used as props only, to hold a REF of the image displayed in the cop modal
 
-            newName: null,
-            newBio: null,
-
+            updating: false
         };
         this.isUserLoggedin = this.isUserLoggedin.bind(this);
         this.retreieveUserData = this.retreieveUserData.bind(this);
 
+        //Modal Settings
         this.openEditModal = this.openEditModal.bind(this);
         this.closeEditModal = this.closeEditModal.bind(this);
-
         this.openSettingsModal = this.openSettingsModal.bind(this);
         this.closeSettingsModal = this.closeSettingsModal.bind(this);
 
+        //For files
         this.returnFileSize = this.returnFileSize.bind(this);
-        this.uploadProfilePicture = this.uploadProfilePicture.bind(this);
         this.fileSelected = this.fileSelected.bind(this);
         this.handleCrop = this.handleCrop.bind(this);
 
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onBioChange = this.onBioChange.bind(this);
+
+        this.onEditSubmit = this.onEditSubmit.bind(this);
+        this.uploadProfilePicture = this.uploadProfilePicture.bind(this)
+
+    }
+
+    openEditModal() {
+        this.setState({editModalOpen: true});
+    }
+
+    closeEditModal() {
+        this.setState({editModalOpen: false});
+    }
+
+    openSettingsModal() {
+        this.setState({settingsModalOpen: true});
+    }
+
+    closeSettingsModal() {
+        this.setState({settingsModalOpen: false});
+    }
+
+    onNameChange(newName) {
+        this.setState({newName});
+    }
+
+    onBioChange(newBio) {
+        this.setState({newBio});
+    }
+
+
+    onEditSubmit() {
+        let changes = {}
+        function uploadProfilePicture(){
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
+                this.setState({uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'});
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED:
+                        console.error('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING:
+                        break;
+                }
+            }, error => {
+                switch (error.code) {
+                    case 'storage/unauthorized':
+                        console.error('FIREBASE_ERR: storage/unauthorized');
+                        break;
+                    case 'storage/canceled':
+                        console.error('FIREBASE_ERR: storage/canceled');
+                        break;
+                    case 'storage/unknown':
+                        console.error('FIREBASE_ERR: storage/unknown');
+                        break;
+                }
+            }, () => {
+                uploadTask.snapshot.ref.getDownloadURL()
+                    .then(downloadURL => {
+                        return downloadURL
+                    });
+            });
+        }
+        let changes = {};
+        let file = this.state.currentUpload;
+        this.setState({});
+        if (this.state.currentUpload) {
+            this.setState({updating: true});
+            let file = this.state.currentUpload;
+            let storage = firebase.app().storage(); // Unused
+            let storageRef = firebase.storage().ref();
+            let metadata = {contentType: file.type};
+            let uploadTask = storageRef.child(
+                'UserProfilePictures/' + this.state.userData.displayName
+            ).put(file, metadata);
+            if (this.returnFileSize(file.size)) {
+                this.setState({
+                    profilePictureUploaded: false,
+                    uploadProgress: 0
+                });
+                if (this.state.userData.profilePicture !== null) {
+                    let desertRef = firebase.storage().refFromURL(this.state.userData.profilePicture);
+                    desertRef.delete()
+                        .then(this.uploadProfilePicture())
+                        .catch((error) => {
+                            console.error(error)
+                        })
+                } else {
+
+                }
+            }
+            else {
+                alert('Sorry, this file is too big \n Max size is 5MB');
+                this.setState({
+                    profilePictureUploaded: false
+                })
+            }
+
+
+        }
+        // if (this.state.profilePictureUploaded || this.state.profilePictureUploaded === null) {
+        //     let postOptions = {
+        //         method: 'PUT',
+        //         body: JSON.stringify({
+        //             name: this.state.name,
+        //             bio: this.state.bio
+        //         }),
+        //         headers: new Headers({'Content-type': 'application/json'})
+        //     };
+        //     console.log(changes);
+        //     fetch(api.userInfo_Data, postOptions)
+        //         .then(res => {
+        //             let rStat = res.status;
+        //             if (rStat == 404 || rStat == 500) return;
+        //             else return res.json();
+        //         })
+        //         .then(resJSON => {
+        //             if (resJSON) {
+        //                 this.setState({
+        //                     updating: false,
+        //                 }, () => {
+        //                     this.retreieveUserData()
+        //                 });
+        //             } else {
+        //                 this.setState({
+        //                     profilePictureUploaded: false,
+        //                 }, () => {
+        //                     alert('Something went wrong updating your profile.');
+        //                 });
+        //             }
+        //         })
+        // } else {
+        //     this.setState({
+        //         updating: false
+        //     })
+        // }
 
 
     }
 
-    openEditModal() { this.setState({editModalOpen: true}); }
-    closeEditModal() { this.setState({editModalOpen: false}); }
-    openSettingsModal() { this.setState({settingsModalOpen: true}); }
-    closeSettingsModal() { this.setState({settingsModalOpen: false}); }
-    onEditSubmit(update){
-        //TODO implement
+    handleCrop(image) {
+        this.setState({currentUpload: image});
     }
-    handleCrop(image){ this.setState({ currentUpload: image }); }
 
     fileSelected(event) {
         if (event.target.files[0]) {
@@ -92,76 +223,6 @@ export default class Profile extends Component {
             imgSize = imgSize.substring(0, imgSize.indexOf('M'));
             return parseInt(imgSize) <= 5;
         } else return true
-    }
-
-    uploadProfilePicture(event) { //TODO: fix EVENT for just the file, OR remove and pull from state for the image upload
-        event.preventDefault();
-        this.setState({
-            profilePictureUploaded: false,
-            uploadProgress: 0
-        });
-        let formData = new FormData(event.target);
-        let file = formData.get('file');
-        if (this.returnFileSize(file.size)) {
-            let storage = firebase.app().storage(); // Unused
-            let storageRef = firebase.storage().ref();
-            let metadata = {contentType: file.type};
-            let uploadTask = storageRef.child(file.name).put(file, metadata);
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
-                this.setState({uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'});
-                switch (snapshot.state) {
-                    case firebase.storage.TaskState.PAUSED:
-                        console.log('Upload is paused');
-                        break;
-                    case firebase.storage.TaskState.RUNNING:
-                        break;
-                }
-            }, error => {
-                switch (error.code) {
-                    case 'storage/unauthorized':
-                        break;
-                    case 'storage/canceled':
-                        break;
-                    case 'storage/unknown':
-                        break;
-                }
-            }, () => {
-                uploadTask.snapshot.ref.getDownloadURL()
-                    .then(downloadURL => {
-                        let postData = {
-                            profilePicture: downloadURL,
-                            displayName: this.state.displayName
-                        };
-                        let postOptions = {
-                            method: 'PUT',
-                            body: JSON.stringify(postData),
-                            headers: new Headers({'Content-type': 'application/json'})
-                        };
-                        fetch(api.userInfo_Data, postOptions)
-                            .then(res => {
-                                let rStat = res.status;
-                                if (rStat == 404 || rStat == 500) return;
-                                else return res.json();
-                            })
-                            .then(resJSON => {
-                                if (resJSON) {
-                                    this.setState({
-                                        profilePictureUploaded: true,
-                                    });
-                                } else {
-                                    this.setState({
-                                        profilePictureUploaded: false,
-                                        fileSelected: false,
-                                    }, () => {
-                                        alert('Something went wrong uploading this meme.');
-                                    });
-                                }
-                            })
-                    });
-            });
-        } else {
-            alert('Sorry, this file is too big \n Max size is 5MB')
-        }
     }
 
     isUserLoggedin() {
@@ -284,15 +345,22 @@ export default class Profile extends Component {
                     <EditProfile
                         editModalOpen={this.state.editModalOpen}
                         closeEditModal={this.closeEditModal}
+
                         onNameChange={this.onNameChange}
                         onBioChange={this.onBioChange}
+
                         name={this.state.userData.name}
                         bio={this.state.userData.bio}
-                        fileSelected={this.fileSelected}
-                        onEditSubmit={this.onEditSubmit}
+
                         profilePreview={this.state.profilePreview}
                         profilePictureSelected={this.state.profilePictureSelected}
+
+                        fileSelected={this.fileSelected}
+                        onEditSubmit={this.onEditSubmit}
                         handleCrop={this.handleCrop}
+                        currentUpload={this.state.currentUpload}
+
+                        onEditSubmit={this.onEditSubmit}
                     />
                     <Settings
                         settingsModalOpen={this.state.settingsModalOpen}
