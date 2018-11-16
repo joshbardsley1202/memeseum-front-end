@@ -255,7 +255,7 @@ export default class Profile extends Component {
                     this.setState({
                         userWasFound: true,
                         dataHasRendered: true,
-                        profilePreview: resJSON.user.profilePicture,
+                        // profilePreview: resJSON.user.profilePicture,
                         userData: {
                             displayName,
                             profilePicture: resJSON.user.profilePicture,
