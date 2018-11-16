@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import Cropper from 'react-cropper'
 import "./EditProfile.css";
 import 'cropperjs/dist/cropper.css'
+
 const customStyles = {
     content: {
         top: '50%',
@@ -16,28 +17,41 @@ const customStyles = {
     }
 };
 export default class EditProfile extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = { //Only for two way data binding on the name and the bio.
             name: props.name,
-            bio: props.bio
+            bio: props.bio,
         };
+
+        this.onCropEnd = this.onCropEnd.bind(this);
+        this.getBlob = this.getBlob.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onBioChange = this.onBioChange.bind(this);
-        this.onCropEnd = this.onCropEnd.bind(this)
-        this.getBlob = this.getBlob.bind(this)
 
     }
-    onNameChange(event){ this.setState({ name: event.target.value }); }
-    onBioChange(event){ this.setState({ bio: event.target.value }); }
-    getBlob(blob){
-        const file = URL.createObjectURL(blob);
-        this.props.handleCrop(file);
+
+    onNameChange(event) {
+        this.setState({name: event.target.value}); //Two way data binding ONLY
+        this.props.onNameChange(event.target.value);
     }
-    onCropEnd(){ this.refs.cropper.getCroppedCanvas().toBlob(this.getBlob); } // Janky as fuck.
-    render(props){
+
+    onBioChange(event) {
+        this.setState({bio: event.target.value}); //Two way data binding ONLY
+        this.props.onBioChange(event.target.value);
+    }
+
+    getBlob(blob) {
+        this.props.handleCrop(blob);
+    }
+
+    onCropEnd() {
+        this.refs.cropper.getCroppedCanvas().toBlob(this.getBlob);
+    }
+
+    render(props) {
         let profileImage = null;
-        if(this.props.profilePreview){
+        if (this.props.profilePreview) {
             profileImage = (
                 <section className="profile-edit-preview-container">
                     <Cropper
@@ -48,20 +62,35 @@ export default class EditProfile extends Component {
                             width: '100%'
                         }}
                         aspectRatio={1 / 1}
-                        guides={false}
+                        guides={true}
                         cropend={this.onCropEnd}
                     />
                 </section>
             )
         }
-        return(
+        let updating = null;
+        if(this.props.updating){
+            updating = (
+                <p>Updating...</p>
+            )
+        }
+        return (
             <Modal
                 isOpen={this.props.editModalOpen}
                 onRequestClose={this.props.closeEditModal}
                 style={customStyles}
             >
                 <section className="component-edit-profile">
-                    <h1>Edit Profile </h1>
+                    <div className="submit-edit-container">
+                        <h1>Edit Profile </h1>
+                        <div>
+                            <button
+                                onClick={this.props.onEditSubmit}
+                            >Save
+                            </button>
+                        </div>
+                    </div>
+                    {updating}
                     <form>
                         <p className="head-info">Profile Information</p>
                         <div className="edit-info-field">
@@ -77,7 +106,8 @@ export default class EditProfile extends Component {
                         </div>
                         <div className="edit-info-field">
                             <label>Bio</label>
-                            <p className="foot-info">(Optional) A brief description of yourself shown on your profile.</p>
+                            <p className="foot-info">(Optional) A brief description of yourself shown on your
+                                profile.</p>
                             <textarea
                                 className="edit-form-input"
                                 type="text"

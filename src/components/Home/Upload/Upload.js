@@ -86,7 +86,9 @@ export default class Upload extends Component {
             let storage = firebase.app().storage(); // Unused
             let storageRef = firebase.storage().ref();
             let metadata = {contentType: file.type};
-            let uploadTask = storageRef.child(file.name).put(file, metadata);
+            let uploadTask = storageRef.child(
+                "Memes/"+this.state.displayName+file.name
+            ).put(file, metadata);
             uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
                 this.setState({uploadProgress: ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0) + '%'});
                 switch (snapshot.state) {

@@ -47,8 +47,52 @@
     height: 200px;
 
 }
-#pro-pic-select{
+
+#pro-pic-select {
     text-align: center;
 
 }
+
+.submit-edit-container {
+    width: 100%;
+    display: flex;
+
+    align-items: center;
+}
+
+.submit-edit-container div {
+    flex: 1;
+    display: flex;
+    justify-content: right;
+}
+
+.submit-edit-container div button {
+    font-family: "Fredoka One";
+    font-size: 15px;
+    color: white;
+    background-color: springgreen;
+    border: none;
+    padding: 7px 20px 7px 20px;
+    border-radius: 5px;
+}
+.submit-edit-container div button:hover{
+    background-color: limegreen;
+    cursor: pointer;
+}
+
+#submit-edit {
+    font-family: "Fredoka One";
+    font-size: 18px;
+    color: white;
+    border: 0px;
+    border-radius: 5px;
+    background-color: springgreen;
+    padding: 7px 29px 7px 29px;
+}
+
+#submit-edit:hover {
+    cursor: pointer;
+    background-color: limegreen;
+}
+
 
